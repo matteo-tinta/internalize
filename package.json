@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "docker": "docker compose up"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
@@ -18,10 +19,14 @@
     "@mui/base": "^5.0.0-beta.60",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
+    "mongodb": "^6.10.0",
+    "net": "^1.0.2",
     "next": "15.0.1",
     "react": "19.0.0-rc-69d4b800-20241021",
     "react-dom": "19.0.0-rc-69d4b800-20241021",
-    "react-transition-group": "^4.4.5"
+    "react-transition-group": "^4.4.5",
+    "typedi": "^0.10.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
