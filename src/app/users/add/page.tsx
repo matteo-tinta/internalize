@@ -3,20 +3,26 @@ import { Button } from "@/app/components/form/button"
 import { Field } from "@/app/components/form/field"
 import { InternalizeForm } from "@/app/components/form/form"
 import { Input } from "@/app/components/form/input"
-import { Label } from "@/app/components/form/label"
 import { Page } from "@/app/components/page"
 import { addUser } from "./actions"
+import { InputError } from "@/app/components/form/input-error"
 
 const AddUserForm = () => {
   
   return (
     <InternalizeForm action={addUser}
-      render={(state) => (
+      render={(status, state) => (
         <>
           <Field>
-            <Input placeholder="User id or email" disabled={state.pending} name="userId" id="userId"/>
+            <Input 
+              placeholder="User id or email" 
+              disabled={status.pending} 
+              name="userId" 
+              id="userId"/>
+            <InputError error={state?.errors?.userId} />
+            
           </Field>
-          <Button className="w-full" type="submit" disabled={state.pending}>
+          <Button className="w-full" type="submit" disabled={status.pending}>
             Internalize!
           </Button>
         </>

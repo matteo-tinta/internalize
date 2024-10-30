@@ -1,5 +1,7 @@
-const createAction = async () => {
+"use server"
 
+const createAction = async () => {
+  
 }
 
 export {
