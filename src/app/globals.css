@@ -15,7 +15,15 @@
 }
 
 body {
+  @apply text-base;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  @apply text-2xl
+}
+
+section {
+  @apply mb-3
 }

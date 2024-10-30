@@ -1,0 +1,9 @@
+.menu-item {
+  a {
+    @apply hover:text-violet-400;
+    @apply transition-colors;
+    &.active {
+      @apply text-violet-400;
+    }
+  }
+}
