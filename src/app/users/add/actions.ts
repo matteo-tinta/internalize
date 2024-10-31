@@ -1,30 +1,24 @@
-"use server"
+"use server";
 
-import { CreateUserSchema } from "@/app/lib/dto/users/createUserDto.model"
-import { ActionType, FormState } from "@/app/lib/form.definitions"
-import { UserRespository } from "@/app/lib/mongo/users/user.repository"
-import { ObjectId } from "mongodb"
+import { CreateUserSchema } from "@/app/lib/dto/users/createUserDto.model";
+import { ActionType, FormState } from "@/app/lib/form.definitions";
+import { Container } from "@/app/lib/services/container.service";
 
-const addUser: ActionType = async (state: FormState, formData: FormData): Promise<FormState> => {
-  const validatedCreatedUser = CreateUserSchema.safeParse(Object.fromEntries(formData))
-  if(!validatedCreatedUser.success) {
+const addUser: ActionType = async (
+  state: FormState,
+  formData: FormData
+): Promise<FormState> => {
+  const validatedCreatedUser = CreateUserSchema.safeParse(Object.fromEntries(formData));
+  if (!validatedCreatedUser.success) {
     return {
-      errors: validatedCreatedUser.error.flatten().fieldErrors
-    }
+      errors: validatedCreatedUser.error.flatten().fieldErrors,
+    };
   }
-  
 
-  const userRepository = new UserRespository()
-  userRepository.create({
-    _id: new ObjectId(),
-    userId: validatedCreatedUser.data.userId
-  })
+  await Container(async ({ userService }) => {
+    const { data } = validatedCreatedUser;
+    await userService.addUserAsync(data.userId);
+  });
+};
 
-  const users = await userRepository.all()
-
-  console.log({users, data: validatedCreatedUser.data})
-}
-
-export {
-  addUser
-}
+export { addUser };
