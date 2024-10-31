@@ -32,7 +32,6 @@ export default function RootLayout({
       >
         <div className="flex">
           <Sidenav></Sidenav>
-
           <section className="w-full px-2">{children}</section>
         </div>
       </body>

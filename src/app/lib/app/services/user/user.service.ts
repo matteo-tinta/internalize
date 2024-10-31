@@ -1,5 +1,6 @@
 import { User } from "../../domain/user/user.domain"
 import { BaseService } from "../base.service"
+import { ServiceException } from "../exceptions/service.exception"
 import { IUnitOfWorkRepository } from "../interfaces/repositories/IUowRepository"
 import { IUserRepository } from "../interfaces/repositories/IUserRepository"
 
@@ -9,6 +10,11 @@ export class UserService extends BaseService {
   }
 
   addUserAsync = async (userId: string) => {
+    const dbUser = await this.repository.getUserByIdAsync(userId)
+    
+    if(dbUser){
+      throw new ServiceException(`User ${userId} already exist`)
+    }
 
     const user: User = {
       userId: userId

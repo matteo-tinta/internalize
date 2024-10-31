@@ -1,16 +1,18 @@
 import { buildMongoClient, InternalizeMongoClient, InternalizeMongoConnectionString} from "../../mongo/mongo-client"
 import { UnitOfWorkRepository } from "../dal/repositories/uof.repository"
 import { UserRespository } from "../dal/repositories/user/user.repository"
+import { ValidatorService } from "../dto/validator/validator.service"
 import { UserService } from "./user/user.service"
 
 type ContainerExecuteDependencies = {
-  userService: UserService
+  userService: UserService,
+  formDataValidationService: ValidatorService
 }
 
-type ContainerExecuteFunction = (deps: ContainerExecuteDependencies) => Promise<void>
+type ContainerExecuteFunction<T> = (deps: ContainerExecuteDependencies) => Promise<T | undefined>
 
-const Container = async (
-  execute: ContainerExecuteFunction
+const Container = async <T,>(
+  execute: ContainerExecuteFunction<T>
 ) => {
   //Db connection
   const mongo: InternalizeMongoClient = await buildMongoClient(InternalizeMongoConnectionString!)
@@ -21,16 +23,20 @@ const Container = async (
 
   //services
   const userService = new UserService(userRepository, uof)
+  const formDataValidationService = new ValidatorService()
+
+  let result: T | undefined = undefined
 
   try {
-    await execute({
-      userService
+    result = await execute({
+      userService,
+      formDataValidationService
     })
-
-  } catch {
   } finally {
     await mongo.client.close()
   }
+
+  return result;
 }
 
 export {
