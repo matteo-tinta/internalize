@@ -9,6 +9,7 @@ export class UserRespository implements IUserRepository {
   collectionName: string = "users";
   constructor(private mongo: InternalizeMongoClient) {}
   
+  
   all = async (): Promise<User[]> => {
     const client = await this.mongo.db(InternalizeDbName!);
     const cursor = client.collection(this.collectionName).find()
@@ -33,4 +34,12 @@ export class UserRespository implements IUserRepository {
 
     await mongoClient.collection(this.collectionName).insertOne(user);
   };
+
+  deleteAsync = async (user: User): Promise<void> => {
+    const mongoClient = await this.mongo.db(InternalizeDbName!);
+
+    await mongoClient.collection(this.collectionName).findOneAndDelete({
+      userId: user.userId
+    });
+  }
 }

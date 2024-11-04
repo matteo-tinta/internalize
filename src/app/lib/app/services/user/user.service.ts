@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache"
 import { User } from "../../domain/user/user.domain"
 import { BaseService } from "../base.service"
 import { ServiceException } from "../exceptions/service.exception"
@@ -27,6 +28,22 @@ export class UserService extends BaseService {
 
     await this.uof.commitAsync(async () => {
       await this.repository.addUserAsync(user)
+    })
+  }
+
+  deleteUserAsync = async (userId: string) => {
+    const dbUser = await this.repository.getUserByIdAsync(userId)
+    
+    if(!dbUser){
+      throw new ServiceException(`User ${userId} not exist`)
+    }
+
+    const user: User = {
+      userId: userId
+    }
+
+    await this.uof.commitAsync(async () => {
+      await this.repository.deleteAsync(user)
     })
   }
 }

@@ -1,11 +1,10 @@
-import { useActionState } from "react"
 import { Page } from "../components/page"
 import { loadUsers } from "./actions"
 import { AddUserForm } from "./add/page"
+import { UserDelete } from "./user-delete"
 
 const UserPage = async () => {
   const users = await loadUsers() 
-
   return (
     <Page>
       <section>
@@ -37,7 +36,9 @@ const UserPage = async () => {
                 <tr key={m.userId}>
                   <td>{i + 1}</td>
                   <td>{m.userId}</td>
-                  <td></td>
+                  <td>
+                    <UserDelete userId={m.userId} />
+                  </td>
                 </tr>
               ))
             }
