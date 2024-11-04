@@ -8,6 +8,18 @@ import { User } from "@/app/lib/app/domain/user/user.domain";
 export class UserRespository implements IUserRepository {
   collectionName: string = "users";
   constructor(private mongo: InternalizeMongoClient) {}
+  
+  all = async (): Promise<User[]> => {
+    const client = await this.mongo.db(InternalizeDbName!);
+    const cursor = client.collection(this.collectionName).find()
+
+    const users: User[] = []
+    for await (const user of cursor){
+      users.push(user as unknown as User)
+    }
+
+    return users
+  }
 
   getUserByIdAsync = async (userId: string): Promise<User | undefined> => {
     const mongoClient = await this.mongo.db(InternalizeDbName!);

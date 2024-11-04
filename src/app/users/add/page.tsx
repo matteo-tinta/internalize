@@ -7,7 +7,7 @@ import { Page } from "@/app/components/page"
 import { addUser } from "./actions"
 import { InputError } from "@/app/components/form/input-error"
 
-const AddUserForm = () => {
+export const AddUserForm = () => {
   
   return (
     <InternalizeForm action={addUser}

@@ -5,8 +5,13 @@ import { IUnitOfWorkRepository } from "../interfaces/repositories/IUowRepository
 import { IUserRepository } from "../interfaces/repositories/IUserRepository"
 
 export class UserService extends BaseService {
+  
   constructor(private repository: IUserRepository, protected uof: IUnitOfWorkRepository) {
     super(uof)
+  }
+
+  all = async (): Promise<User[]> => {
+    return await this.repository.all();
   }
 
   addUserAsync = async (userId: string) => {
