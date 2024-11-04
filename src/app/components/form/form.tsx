@@ -102,7 +102,7 @@ const InternalizeForm = (props: InternalizeFormProps) => {
   } = props;
   const [state, action] = useActionState<FormState, FormData>(
     inputAction,
-    undefined
+    undefined as unknown as FormState
   );
 
   return (

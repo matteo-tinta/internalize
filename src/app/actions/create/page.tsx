@@ -6,18 +6,24 @@ import { Field } from "@/app/components/form/field";
 import { Input } from "@/app/components/form/input";
 import { Button } from "@/app/components/form/button";
 import { Page } from "@/app/components/page";
+import { InputError } from "@/app/components/form/input-error";
 
-const CreateActionForm = () => {
+export const CreateActionForm = () => {
   return (
     <InternalizeForm
       action={createAction}
-      render={(state) => (
+      render={(status,state) => (
         <>
           <Field>
-            <Input placeholder="Action name" id="actionName" name="actionName" />
+            <Input 
+            placeholder="Action name" 
+            id="name" 
+            name="name" 
+            disabled={status.pending}/>
+            <InputError error={state?.errors?.name} />
           </Field>
 
-          <Button className="w-full float-right" type="submit" disabled={state.pending}>
+          <Button className="w-full" type="submit" disabled={status.pending}>
             Create
           </Button>
         </>
