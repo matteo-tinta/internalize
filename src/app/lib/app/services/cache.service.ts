@@ -1,7 +1,8 @@
 import { revalidatePath } from "next/cache";
 
 const revalidate = {
-  users: () => revalidatePath("/users")
+  users: () => revalidatePath("/users"),
+  roles: () => revalidatePath("/roles")
 }
 
 export {

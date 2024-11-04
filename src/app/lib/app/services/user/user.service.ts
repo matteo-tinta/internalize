@@ -1,4 +1,3 @@
-import { revalidatePath } from "next/cache"
 import { User } from "../../domain/user/user.domain"
 import { BaseService } from "../base.service"
 import { ServiceException } from "../exceptions/service.exception"
