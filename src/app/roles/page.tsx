@@ -1,5 +1,6 @@
 import { Page } from "../components/page"
 import { loadAllRoles } from "./actions"
+import { AddRoleForm } from "./add/page"
 
 const RolePage = async () => {
   const roles = await loadAllRoles()
@@ -10,6 +11,10 @@ const RolePage = async () => {
         <h1>Roles</h1>
         <p>See and define here your roles</p>
         <p>Roles groups actions, and can be linked to single users</p>
+
+        <section>
+          <AddRoleForm />
+        </section>
 
         <table className="w-full mt-4">
           <thead>
