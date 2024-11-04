@@ -3,7 +3,6 @@
 import { InternalizeForm } from "@/app/components/form/form";
 import { createAction } from "./actions";
 import { Field } from "@/app/components/form/field";
-import { Label } from "@/app/components/form/label";
 import { Input } from "@/app/components/form/input";
 import { Button } from "@/app/components/form/button";
 import { Page } from "@/app/components/page";
