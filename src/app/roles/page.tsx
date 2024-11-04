@@ -1,6 +1,7 @@
 import { Page } from "../components/page"
 import { loadAllRoles } from "./actions"
 import { AddRoleForm } from "./add/page"
+import { RoleDelete } from "./role-delete"
 
 const RolePage = async () => {
   const roles = await loadAllRoles()
@@ -32,12 +33,12 @@ const RolePage = async () => {
           </thead>
           <tbody>
             {
-              roles?.map((m, i) => (
-                <tr key={m.name}>
+              roles?.map((role, i) => (
+                <tr key={role.name}>
                   <td>{i + 1}</td>
-                  <td>{m.name}</td>
+                  <td>{role.name}</td>
                   <td>
-                    
+                    <RoleDelete name={role.name} />
                   </td>
                 </tr>
               ))

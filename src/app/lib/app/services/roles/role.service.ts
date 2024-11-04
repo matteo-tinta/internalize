@@ -5,6 +5,7 @@ import { IRoleRepository } from "../interfaces/repositories/IRoleRepository";
 import { IUnitOfWorkRepository } from "../interfaces/repositories/IUowRepository";
 
 export class RoleService extends BaseService {
+  
   constructor(
     private repository: IRoleRepository,
     protected uof: IUnitOfWorkRepository
@@ -31,4 +32,16 @@ export class RoleService extends BaseService {
       await this.repository.addRoleAsync(role);
     });
   };
+
+  async deleteRoleAsync(name: string) {
+    const actualDbRole = await this.repository.getRoleByNameAsync(name);
+
+    if(!actualDbRole){
+      throw new ServiceException(`role ${name} does not exist`)
+    }
+
+    await this.uof.commitAsync(
+      async () => this.repository.deleteRoleAsync(actualDbRole)
+    )
+  }
 }

@@ -1,15 +1,21 @@
-"use server"
+"use server";
 
-import { Container } from "../lib/app/services/container.service"
+import { Container } from "../lib/app/services/container.service";
 
 const loadAllRoles = async () => {
-  return await Container(
-    async ( { roleService } ) => {
-      return await roleService.all()
-    }
-  )
-}
+  return await Container(async ({ roleService }) => {
+    return await roleService.all();
+  });
+};
 
-export {
-  loadAllRoles
-}
+const deleteRole = async (role: { name: string }) => {
+  const { name } = role;
+
+  return await Container(async ({ roleService, revalidate }) => {
+    await roleService.deleteRoleAsync(name)
+
+    revalidate.roles()
+  });
+};
+
+export { loadAllRoles, deleteRole };
