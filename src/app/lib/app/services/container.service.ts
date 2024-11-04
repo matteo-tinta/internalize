@@ -1,12 +1,15 @@
 import { buildMongoClient, InternalizeMongoClient, InternalizeMongoConnectionString} from "../../mongo/mongo-client"
+import { RoleRepository } from "../dal/repositories/role/RoleRepository"
 import { UnitOfWorkRepository } from "../dal/repositories/uof.repository"
 import { UserRespository } from "../dal/repositories/user/user.repository"
 import { ValidatorService } from "../dto/validator/validator.service"
 import { revalidate } from "./cache.service"
+import { RoleService } from "./roles/role.service"
 import { UserService } from "./user/user.service"
 
 type ContainerExecuteDependencies = {
   userService: UserService,
+  roleService: RoleService,
   formDataValidationService: ValidatorService,
   revalidate: typeof revalidate
 }
@@ -21,10 +24,12 @@ const Container = async <T,>(
 
   //repositories
   const userRepository = new UserRespository(mongo)
+  const roleRepository = new RoleRepository(mongo)
   const uof = new UnitOfWorkRepository(mongo)
 
   //services
   const userService = new UserService(userRepository, uof)
+  const roleService = new RoleService(roleRepository, uof)
   const formDataValidationService = new ValidatorService()
 
   let result: T | undefined = undefined
@@ -32,6 +37,7 @@ const Container = async <T,>(
   try {
     result = await execute({
       userService,
+      roleService,
       formDataValidationService,
       revalidate
     })

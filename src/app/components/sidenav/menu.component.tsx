@@ -67,6 +67,10 @@ const Menu = () => {
       <Link className={checkIfActive("/users/add")} href="/users/add">Add</Link>
       </MenuItem>
     </MenuGroup>
+    <MenuGroup title={
+      <Link className={checkIfChildrenActive("/roles")} href="/roles">Roles</Link>
+    }>
+    </MenuGroup>
     </>
   );
 };
