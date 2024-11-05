@@ -22,7 +22,6 @@ export class UserRespository implements IUserRepository {
   };
 
   deleteAsync = async (user: UserType): Promise<void> => {
-    console.warn("Trying to delete ", user)
     await User.findOneAndDelete({
       userId: user.userId
     })

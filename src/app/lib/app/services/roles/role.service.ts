@@ -25,9 +25,9 @@ export class RoleService extends BaseService {
       throw new ServiceException(`role ${name} already exist`);
     }
 
-    const role: Role = {
+    const role = new Role({
       name: name,
-    };
+    });
 
     await this.uof.commitAsync(async () => {
       await this.repository.addRoleAsync(role);
