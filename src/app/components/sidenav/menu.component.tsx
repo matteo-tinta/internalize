@@ -64,7 +64,7 @@ const Menu = () => {
             className={checkIfActive("/actions/create")}
             href="/actions/create"
           >
-            Create
+            Create a new action
           </Link>
         </MenuItem>
       </MenuGroup>
@@ -77,14 +77,14 @@ const Menu = () => {
       >
         <MenuItem>
           <Link className={checkIfActive("/users/add")} href="/users/add">
-            Add
+            Internalize a new user
           </Link>
         </MenuItem>
       </MenuGroup>
       <MenuGroup
         title={
           <Link className={checkIfChildrenActive("/roles")} href="/roles">
-            Roles
+            Application Roles
           </Link>
         }
       ></MenuGroup>
