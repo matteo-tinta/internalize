@@ -10,7 +10,7 @@ const config: Config = {
     fontSize: {
       sm: '0.7rem',
       base: '0.8rem',
-      xl: '1.25rem',
+      xl: '1rem',
       '2xl': '1.563rem',
       '3xl': '1.953rem',
       '4xl': '2.441rem',
@@ -25,6 +25,15 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "foreground-white": "var(--foreground-white)",
+        "table-background": "var(--table-background)",
+        "table-heading": "var(--table-bg)",
+        "table-row": "var(--table-row)",
+        "table-border": "var(--table-border)",
+        "table-hover": "var(--table-hover)",
+        accent: "var(--accent)",
+        "accent-hover": "var(--accent-hover)",
+        sidenav: "var(--sidenav-bg)"
       },
       transitionProperty: {
         'width': 'width',

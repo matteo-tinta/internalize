@@ -37,7 +37,7 @@ const InternalizeSnackbackResponse = (props: {
 
   const successSnackbarContent = (props: SnackbarPropsCallback) => {
     return (
-      <div className="fixed z-50 font-sans flex right-4 top-4 left-auto justify-start rounded-lg font-semibold bg-green-600 p-3 animation-appear transition-transform border-solid min-w-snackbar max-w-snackbar shadow-md border-0"
+      <div className="fixed z-50 font-sans flex right-4 top-4 left-auto justify-start rounded-lg bg-green-600 p-3 animation-appear transition-transform border-solid min-w-snackbar max-w-snackbar text-foreground-white shadow-md border-0"
       {...props()}>
         {state?.message || "Submitted Successfully!"}
       </div>
@@ -46,7 +46,7 @@ const InternalizeSnackbackResponse = (props: {
 
   const failedSnackbarContent = (props: SnackbarPropsCallback) => {
     return (
-      <div className="fixed z-50 font-sans flex right-4 top-4 left-auto justify-start rounded-lg font-semibold bg-red-600 p-3 animation-appear transition-transform border-solid min-w-snackbar max-w-snackbar shadow-md border-0"
+      <div className="fixed z-50 font-sans flex right-4 top-4 left-auto justify-start rounded-lg bg-red-600 p-3 animation-appear transition-transform border-solid min-w-snackbar max-w-snackbar text-foreground-white shadow-md border-0"
       {...props()}>
         {state?.message || "An error occoured"}
       </div>

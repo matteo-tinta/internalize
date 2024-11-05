@@ -60,7 +60,7 @@ const Modal = forwardRef((props: ModalProps, ref: Ref<ModalRef>) => {
 const ModalContent = (props: PropsWithChildren) => {
   return (
     <div
-      className="relative flex flex-col gap-[8px] overflow-hidden text-start bg-black border-violet-600 border-2 rounded shadow shadow-violet-500"
+      className="relative flex flex-col gap-[8px] overflow-hidden text-start bg-background shadow border-[1px] rounded"
       {...props}
     />
   );

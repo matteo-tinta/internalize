@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #f1f1f2;
+  --foreground: #000000;
+  --accent: #0d1527;
+  --accent-hover: #131f3c;
+  --sidenav-bg: var(--accent);
+  --foreground-white: var(--background);
+  --table-background: #ffffff;
+  --table-border: #e3e3e3;
+  --table-hover:#e3e3e3;
 }
 
 body {
@@ -21,40 +21,12 @@ body {
 }
 
 h1 {
-  @apply text-2xl
+  @apply !text-2xl
+}
+h2 {
+  @apply !text-xl
 }
 
 section {
   @apply mb-3
-}
-
-table {
-  @apply rounded;
-  @apply overflow-hidden;
-  
-  thead > tr {
-    td, th {
-      @apply bg-gray-900;
-      @apply border-b-gray-800 border-b-4;
-      @apply p-4 py-3;
-      @apply font-semibold text-gray-500;
-    }
-  }
-  
-  tbody > tr:nth-child(2n) {
-    td, th {
-      @apply bg-gray-800;
-      @apply hover:bg-gray-700;
-    }
-  }
-
-  tbody > tr {
-
-    td, th {
-      @apply text-center;
-      @apply bg-gray-900;
-      @apply hover:bg-gray-800;
-      @apply p-4;
-    }
-  }
 }

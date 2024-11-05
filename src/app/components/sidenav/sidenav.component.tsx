@@ -20,13 +20,13 @@ const Sidenav = () => {
   return (
     <div className={
       classNames(
-        "max-w-[200px] min-w-[65px] h-[100vh] relative p-2 bg-gray-900",
+        "max-w-[230px] shadow shadow-violet-500 min-w-[65px] h-[100vh] relative p-2 bg-sidenav",
         {
-          "!min-w-[200px]": isSidenavOpen
+          "!min-w-[230px]": isSidenavOpen
         }
       )
     }>
-      <Button className="absolute right-2" onClick={toggleSidenavOpen}>
+      <Button className="absolute bottom-2 right-2" onClick={toggleSidenavOpen}>
         <BarsIcon />
       </Button>
 

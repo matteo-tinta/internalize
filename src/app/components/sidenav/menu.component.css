@@ -2,8 +2,15 @@
   a {
     @apply hover:text-violet-400;
     @apply transition-colors;
+    @apply text-gray-600;
     &.active {
       @apply text-violet-400;
     }
+  }
+}
+
+.menu-group {
+  > div {
+    color: var(--foreground-white)
   }
 }

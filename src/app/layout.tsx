@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "./tables.css";
+import "./inputs.css";
+import "./buttons.css";
+
 import { Sidenav } from "./components/sidenav/sidenav.component";
 
 const geistSans = localFont({

@@ -1,0 +1,23 @@
+@tailwind base;
+
+@layer base {
+  button.btn {
+    @apply rounded py-2 px-3;
+    @apply transition-colors;
+    
+    
+    &.simple {
+      
+    }
+    
+    &.btn-primary {
+      @apply bg-accent text-foreground-white;
+      @apply shadow;
+      @apply hover:bg-accent-hover;
+    }
+
+    &.btn-secondary {
+
+    }
+  }
+}

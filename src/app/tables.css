@@ -1,0 +1,47 @@
+@tailwind base;
+
+@layer base {
+  table {
+    @apply rounded;
+    @apply overflow-hidden;
+    @apply shadow-sm;
+
+    thead>tr {
+      &:hover {
+
+        td,
+        th {
+          @apply bg-table-hover
+        }
+      }
+
+      td, th {
+        @apply bg-table-background;
+        @apply border-b-table-border border-b-2;
+        @apply p-4 py-3;
+        @apply font-semibold text-black;
+      }
+    }
+
+    tbody {
+      tr {
+        &:hover {
+
+          td,
+          th {
+            @apply bg-table-hover
+          }
+        }
+
+        @apply border-b-[1px] bg-table-border
+      }
+
+      td, th {
+        @apply text-center;
+        @apply bg-table-background;
+        @apply hover:bg-gray-800;
+        @apply p-2;
+      }
+    }
+  }
+}

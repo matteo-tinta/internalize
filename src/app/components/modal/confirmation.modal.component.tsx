@@ -15,7 +15,7 @@ const _ConfirmationModal = forwardRef((props: ConfirmationModalProps, ref: Ref<M
       return (
         <div>
           { children }
-          <div className="bg-gray-900 w-full p-2 text-right">
+          <div className="bg-background w-full p-2 text-right">
             <Button disabled={disabled} className="me-1" onClick={() => onYes(props)}>
               Ok
             </Button>
@@ -35,7 +35,7 @@ export const ConfirmationModal = {
   Modal: _ConfirmationModal,
   Title: (props: PropsWithChildren) => {
     return (
-      <div className="px-5 py-3 !text-xlg font-bold bg-gray-900" {...props} />
+      <div className="px-5 py-3 !text-xlg font-bold bg-background" {...props} />
     )
   },
   Content: (props: PropsWithChildren) => {

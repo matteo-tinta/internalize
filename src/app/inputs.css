@@ -1,0 +1,16 @@
+@tailwind base;
+
+@layer base {
+  input {
+    @apply w-full rounded shadow !px-3 !py-2;
+    @apply text-foreground;
+    
+    /* Hover */
+    
+
+    /* Active */
+    &:active,&:focus,&:active:focus,&:focus-visible {
+      @apply outline-accent-hover;
+    }
+  }
+}
