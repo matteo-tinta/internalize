@@ -1,4 +1,4 @@
-import { UserType } from "@/app/lib/app/domain/user/user.domain";
+import { UserType } from "@/app/lib/domain/user/user.domain";
 
 export interface IUserRepository {
   all(): UserType[] | PromiseLike<UserType[]>;

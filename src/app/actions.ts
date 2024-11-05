@@ -1,6 +1,6 @@
-import { FormDataValidationException, ValidatorService } from "./lib/app/dto/validator/validator.service"
-import { ServiceException } from "./lib/app/services/exceptions/service.exception"
-import { FormState } from "./lib/form.definitions"
+import { FormState } from "./lib/dto/form/form.definitions"
+import { FormDataValidationException } from "./lib/dto/validator/validator.service"
+import { ServiceException } from "./lib/services/exceptions/service.exception"
 
 export const handleError = (error: unknown): FormState => {
   if(!error)

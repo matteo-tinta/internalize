@@ -1,6 +1,6 @@
-import { withTryCatchLogging } from "../app/helpers/logging.helpers";
-import { DB_CONN_STRING } from "../env/env";
 import mongoose from "mongoose";
+import { DB_CONN_STRING } from "../../env";
+import { withTryCatchLogging } from "../../helpers/logging.helpers";
 
 export type InternalizeMongoClient = Awaited<
   ReturnType<typeof buildMongoClient>

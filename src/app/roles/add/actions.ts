@@ -1,9 +1,9 @@
 "use server"
 
 import { handleError } from "@/app/actions";
-import { CreateRoleDto, CreateRoleSchema } from "@/app/lib/app/dto/role/createRoleDto.model";
-import { Container } from "@/app/lib/app/services/container.service";
-import { ActionType, FormState } from "@/app/lib/form.definitions"
+import { ActionType, FormState } from "@/app/lib/dto/form/form.definitions"
+import { CreateRoleDto, CreateRoleSchema } from "@/app/lib/dto/role/createRoleDto.model";
+import { Container } from "@/app/lib/services/container.service";
 
 const addRole: ActionType = async (
   state: FormState,

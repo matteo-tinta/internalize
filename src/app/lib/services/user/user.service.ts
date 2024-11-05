@@ -1,8 +1,8 @@
 import { User, UserType } from "../../domain/user/user.domain"
 import { BaseService } from "../base.service"
 import { ServiceException } from "../exceptions/service.exception"
-import { IUnitOfWorkRepository } from "../interfaces/repositories/IUowRepository"
-import { IUserRepository } from "../interfaces/repositories/IUserRepository"
+import { IUnitOfWorkRepository } from "../_interfaces/repositories/IUowRepository"
+import { IUserRepository } from "../_interfaces/repositories/IUserRepository"
 
 export class UserService extends BaseService {
   

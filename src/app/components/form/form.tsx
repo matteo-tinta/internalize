@@ -1,4 +1,4 @@
-import { ActionType, FormState } from "@/app/lib/form.definitions";
+import { ActionType, FormState } from "@/app/lib/dto/form/form.definitions";
 import Form, { FormProps } from "next/form";
 import { useActionState, useEffect, useRef } from "react";
 import { createPortal, useFormStatus } from "react-dom";

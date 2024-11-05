@@ -1,9 +1,9 @@
 "use server"
 
 import { handleError } from "@/app/actions";
-import { CreateActionDto, CreateActionSchema } from "@/app/lib/app/dto/action/createActionDto.model";
-import { Container } from "@/app/lib/app/services/container.service"
-import { ActionType } from "@/app/lib/form.definitions"
+import { CreateActionDto, CreateActionSchema } from "@/app/lib/dto/action/createActionDto.model";
+import { ActionType } from "@/app/lib/dto/form/form.definitions"
+import { Container } from "@/app/lib/services/container.service";
 
 const createAction: ActionType = async (state, formData) => {
   try {

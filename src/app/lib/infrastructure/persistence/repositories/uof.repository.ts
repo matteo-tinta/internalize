@@ -1,6 +1,6 @@
+import { IUnitOfWorkRepository } from "@/app/lib/services/_interfaces/repositories/IUowRepository";
 import { TransactionOptions } from "mongodb";
-import { IUnitOfWorkRepository } from "../../services/interfaces/repositories/IUowRepository";
-import { InternalizeMongoClient, InternalizeMongoSession } from "../../../mongo/mongo-client";
+import { InternalizeMongoClient, InternalizeMongoSession } from "../mongo-client";
 
 export class UnitOfWorkRepository implements IUnitOfWorkRepository {
   constructor(private mongo: InternalizeMongoClient) {

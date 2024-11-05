@@ -1,6 +1,6 @@
-import { InternalizeMongoClient } from "@/app/lib/mongo/mongo-client";
-import { Action, ActionDomainType } from "../../../domain/action/action";
-import { IActionRepository } from "../../../services/interfaces/repositories/IActionRepository";
+import { ActionDomainType, Action } from "@/app/lib/domain/action/action"
+import { IActionRepository } from "@/app/lib/services/_interfaces/repositories/IActionRepository"
+import { InternalizeMongoClient } from "../../mongo-client"
 
 export class ActionRepository implements IActionRepository {
   constructor(private mongo: InternalizeMongoClient) {}

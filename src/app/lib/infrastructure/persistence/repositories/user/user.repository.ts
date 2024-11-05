@@ -1,8 +1,6 @@
-import { IUserRepository } from "../../../services/interfaces/repositories/IUserRepository";
-import {
-  InternalizeMongoClient,
-} from "../../../../mongo/mongo-client";
-import { User, UserType } from "../../../domain/user/user.domain";
+import { UserType, User } from "@/app/lib/domain/user/user.domain";
+import { IUserRepository } from "@/app/lib/services/_interfaces/repositories/IUserRepository";
+import { InternalizeMongoClient } from "../../mongo-client";
 
 export class UserRespository implements IUserRepository {
   constructor(private mongo: InternalizeMongoClient) {}

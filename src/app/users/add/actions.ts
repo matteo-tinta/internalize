@@ -1,9 +1,9 @@
 "use server";
 
-import { CreateUserDto, CreateUserSchema } from "@/app/lib/app/dto/user/createUserDto.model";
-import { ActionType, FormState } from "@/app/lib/form.definitions";
-import { Container } from "@/app/lib/app/services/container.service";
+import { ActionType, FormState } from "@/app/lib/dto/form/form.definitions";
 import { handleError } from "@/app/actions";
+import { Container } from "@/app/lib/services/container.service";
+import { CreateUserDto, CreateUserSchema } from "@/app/lib/dto/user/createUserDto.model";
 
 const addUser: ActionType = async (
   state: FormState,

@@ -1,13 +1,9 @@
-import { InternalizeDbName, InternalizeMongoClient } from "@/app/lib/mongo/mongo-client";
-import { Role, RoleType } from "../../../domain/role/role.domain";
-import { IRoleRepository } from "../../../services/interfaces/repositories/IRoleRepository";
+import { RoleType, Role } from "@/app/lib/domain/role/role.domain";
+import { IRoleRepository } from "@/app/lib/services/_interfaces/repositories/IRoleRepository";
+import { InternalizeMongoClient } from "../../mongo-client";
 
 export class RoleRepository implements IRoleRepository {
-
-  collectionName: string = "roles";
   constructor(private mongo: InternalizeMongoClient) {}
-  
-  
 
   all: () => Promise<RoleType[]> = async () => {
     return await Role.find()

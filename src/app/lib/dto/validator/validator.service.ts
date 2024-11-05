@@ -1,10 +1,10 @@
-import { FormState } from "@/app/lib/form.definitions";
-import { ZodError, ZodObject, ZodTypeAny } from "zod";
+import { FormState } from "@/app/lib/dto/form/form.definitions";
+import { ZodError, ZodTypeAny } from "zod";
 
 export class FormDataValidationException extends Error {
   formState: FormState;
   
-  constructor(errors: ZodError<any>) {
+  constructor(errors: ZodError<unknown>) {
     super("A validation error occoured");
 
     this.formState = {

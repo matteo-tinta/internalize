@@ -1,6 +1,6 @@
 "use server"
 
-import { Container } from "../lib/app/services/container.service"
+import { Container } from "../lib/services/container.service"
 
 export const listActions = async () => {
   return await Container(

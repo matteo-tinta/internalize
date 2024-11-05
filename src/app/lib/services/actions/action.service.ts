@@ -1,8 +1,8 @@
 import { Action } from "../../domain/action/action";
 import { BaseService } from "../base.service";
 import { ServiceException } from "../exceptions/service.exception";
-import { IActionRepository } from "../interfaces/repositories/IActionRepository";
-import { IUnitOfWorkRepository } from "../interfaces/repositories/IUowRepository";
+import { IActionRepository } from "../_interfaces/repositories/IActionRepository";
+import { IUnitOfWorkRepository } from "../_interfaces/repositories/IUowRepository";
 
 export class ActionsService extends BaseService {
   

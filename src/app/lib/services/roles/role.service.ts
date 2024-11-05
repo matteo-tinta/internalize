@@ -1,8 +1,8 @@
 import { Role } from "../../domain/role/role.domain";
 import { BaseService } from "../base.service";
 import { ServiceException } from "../exceptions/service.exception";
-import { IRoleRepository } from "../interfaces/repositories/IRoleRepository";
-import { IUnitOfWorkRepository } from "../interfaces/repositories/IUowRepository";
+import { IRoleRepository } from "../_interfaces/repositories/IRoleRepository";
+import { IUnitOfWorkRepository } from "../_interfaces/repositories/IUowRepository";
 
 export class RoleService extends BaseService {
   
