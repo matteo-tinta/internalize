@@ -21,9 +21,9 @@ export class ActionsService extends BaseService {
       throw new ServiceException(`action ${actionName} already exist`)
     }
 
-    const action: Action = {
+    const action = new Action({
       name: actionName.toLowerCase()
-    }
+    })
 
     await this.uof.commitAsync(async () => {
       await this.repository.addActionAsync(action)
@@ -41,9 +41,9 @@ export class ActionsService extends BaseService {
       throw new ServiceException(`action ${actionName} does not exist`)
     }
 
-    const action: Action = {
+    const action = new Action({
       name: actionName
-    }
+    })
 
     await this.uof.commitAsync(async () => {
       await this.repository.deleteAsync(action)

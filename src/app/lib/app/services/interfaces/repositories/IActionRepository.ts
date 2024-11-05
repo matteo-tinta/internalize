@@ -1,8 +1,8 @@
-import { Action } from "../../../domain/action/action";
+import { ActionDomainType } from "../../../domain/action/action";
 
 export interface IActionRepository {
-  deleteAsync(action: Action): unknown;
-  getActionByNameAsync(actionName: string): unknown;
-  addActionAsync(action: Action): unknown;
-  all(): Promise<Action[]>;
+  all(): ActionDomainType[] | PromiseLike<ActionDomainType[]>;
+  deleteAsync(action: ActionDomainType): Promise<void>;
+  getActionByNameAsync(actionName: string): Promise<ActionDomainType | null>;
+  addActionAsync(action: ActionDomainType): Promise<void>;
 }
