@@ -1,8 +1,8 @@
-import { User } from "@/app/lib/app/domain/user/user.domain";
+import { UserType } from "@/app/lib/app/domain/user/user.domain";
 
 export interface IUserRepository {
-  all(): User[] | PromiseLike<User[]>;
-  getUserByIdAsync(userId: string): Promise<User | undefined>;
-  addUserAsync(user: User): Promise<void>;
-  deleteAsync(user: User): Promise<void>;
+  all(): UserType[] | PromiseLike<UserType[]>;
+  getUserByIdAsync(userId: string): Promise<UserType | null>;
+  addUserAsync(user: UserType): Promise<void>;
+  deleteAsync(user: UserType): Promise<void>;
 }

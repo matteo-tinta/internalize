@@ -3,11 +3,11 @@ import { IUnitOfWorkRepository } from "../../services/interfaces/repositories/IU
 import { InternalizeMongoClient, InternalizeMongoSession } from "../../../mongo/mongo-client";
 
 export class UnitOfWorkRepository implements IUnitOfWorkRepository {
-  constructor(mongo: InternalizeMongoClient) {
-    this.session = mongo.startSession()
+  constructor(private mongo: InternalizeMongoClient) {
+    this.session = this.mongo.startSession()
   }
   
-  session: InternalizeMongoSession;
+  session: InternalizeMongoSession | undefined;
   
   public commitAsync = async (changes: () => Promise<void>) => {
     const transactionOptions: TransactionOptions = {
@@ -15,16 +15,20 @@ export class UnitOfWorkRepository implements IUnitOfWorkRepository {
       readConcern: { level: 'local' },
       writeConcern: { w: 'majority' }
     };
-
+    
+    const mongooseSession = await this.session
     try {
-        await this.session.withTransaction(changes, transactionOptions)
+      mongooseSession?.startTransaction(transactionOptions)
+      await changes()
 
+      console.warn("committing transaction")
+      await mongooseSession?.commitTransaction()
     } catch(error) {
       console.error({error})
+      await mongooseSession?.abortTransaction()      
     } finally {
-      await this.session.endSession()      
+      await mongooseSession?.endSession()
     }
-
   };
 
 }

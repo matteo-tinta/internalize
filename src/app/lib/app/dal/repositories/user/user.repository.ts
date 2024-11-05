@@ -1,45 +1,30 @@
 import { IUserRepository } from "../../../services/interfaces/repositories/IUserRepository";
 import {
-  InternalizeDbName,
   InternalizeMongoClient,
 } from "../../../../mongo/mongo-client";
-import { User } from "@/app/lib/app/domain/user/user.domain";
+import { User, UserType } from "../../../domain/user/user.domain";
 
 export class UserRespository implements IUserRepository {
-  collectionName: string = "users";
   constructor(private mongo: InternalizeMongoClient) {}
   
-  
-  all = async (): Promise<User[]> => {
-    const client = await this.mongo.db(InternalizeDbName!);
-    const cursor = client.collection(this.collectionName).find()
-
-    const users: User[] = []
-    for await (const user of cursor){
-      users.push(user as unknown as User)
-    }
-
-    return users
+  all = async (): Promise<UserType[]> => {
+    return await User.find()
   }
 
-  getUserByIdAsync = async (userId: string): Promise<User | undefined> => {
-    const mongoClient = await this.mongo.db(InternalizeDbName!);
-    return (await mongoClient.collection(this.collectionName).findOne({
-      userId: userId,
-    })) as unknown as User;
+  getUserByIdAsync = async (userId: string): Promise<UserType | null> => {
+    return await User.findOne({
+      userId: userId
+    })
   };
 
-  addUserAsync = async (user: User) => {
-    const mongoClient = await this.mongo.db(InternalizeDbName!);
-
-    await mongoClient.collection(this.collectionName).insertOne(user);
+  addUserAsync = async (user: UserType) => {
+    await user.save()
   };
 
-  deleteAsync = async (user: User): Promise<void> => {
-    const mongoClient = await this.mongo.db(InternalizeDbName!);
-
-    await mongoClient.collection(this.collectionName).findOneAndDelete({
+  deleteAsync = async (user: UserType): Promise<void> => {
+    console.warn("Trying to delete ", user)
+    await User.findOneAndDelete({
       userId: user.userId
-    });
+    })
   }
 }

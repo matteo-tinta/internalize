@@ -48,7 +48,7 @@ const Container = async <T,>(
       revalidate
     })
   } finally {
-    await mongo.client.close()
+    await mongo.client.disconnect()
   }
 
   return result;

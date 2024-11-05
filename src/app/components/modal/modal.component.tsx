@@ -53,7 +53,7 @@ const Modal = forwardRef((props: ModalProps, ref: Ref<ModalRef>) => {
         {renderModalContent()}
       </ModalContent>
     </BaseModal>,
-    document.body
+    document?.body
   );
 });
 

@@ -1,4 +1,4 @@
-import { User } from "../../domain/user/user.domain"
+import { User, UserType } from "../../domain/user/user.domain"
 import { BaseService } from "../base.service"
 import { ServiceException } from "../exceptions/service.exception"
 import { IUnitOfWorkRepository } from "../interfaces/repositories/IUowRepository"
@@ -10,7 +10,7 @@ export class UserService extends BaseService {
     super(uof)
   }
 
-  all = async (): Promise<User[]> => {
+  all = async (): Promise<UserType[]> => {
     return await this.repository.all();
   }
 
@@ -21,9 +21,9 @@ export class UserService extends BaseService {
       throw new ServiceException(`User ${userId} already exist`)
     }
 
-    const user: User = {
+    const user = new User({
       userId: userId
-    }
+    })
 
     await this.uof.commitAsync(async () => {
       await this.repository.addUserAsync(user)
@@ -37,9 +37,9 @@ export class UserService extends BaseService {
       throw new ServiceException(`User ${userId} not exist`)
     }
 
-    const user: User = {
+    const user = new User({
       userId: userId
-    }
+    })
 
     await this.uof.commitAsync(async () => {
       await this.repository.deleteAsync(user)
