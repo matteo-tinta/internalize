@@ -7,6 +7,7 @@ import {
   ReactNode,
   Ref,
   useImperativeHandle,
+  useRef,
   useState,
 } from "react";
 import { createPortal } from "react-dom";
@@ -15,24 +16,46 @@ export type ModalRenderProps = {
   close: () => void;
 };
 export type ModalRef = {
+  isOpen: boolean;
   open: () => void;
 };
 
-type ModalProps = {
+export type ModalProps = {
   render: (props: ModalRenderProps) => ReactNode;
+  onClose?: () => void;
+  onOpen?: () => void;
+  backdropClassName?: string;
+  className?: string | ((params: { open: boolean }) => string | undefined);
 };
 
 const Modal = forwardRef((props: ModalProps, ref: Ref<ModalRef>) => {
-  const { render } = props;
+  const {
+    render,
+    className: overrideClassName,
+    backdropClassName: overrideBackdropClassName,
+    onOpen = () => {},
+    onClose = () => {},
+  } = props;
+
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+    onOpen();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    onClose();
+  };
 
   useImperativeHandle(
     ref,
     () => ({
+      isOpen: open,
       open: handleOpen,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
@@ -42,27 +65,52 @@ const Modal = forwardRef((props: ModalProps, ref: Ref<ModalRef>) => {
     });
   };
 
+  const backdropClassName = classNames(
+    "modal fixed z-[1300] inset-0 flex items-center justify-center",
+    overrideBackdropClassName
+  );
+
+  const overrideClassNameFn = () => {
+    return typeof overrideClassName === "function"
+      ? overrideClassName({
+          open,
+        })
+      : overrideClassName;
+  };
+
   return createPortal(
     <BaseModal
-      open={open}
-      onClose={handleClose}
-      slots={{ backdrop: Backdrop }}
-      className="fixed z-[1300] inset-0 flex items-center justify-center"
-    >
-      <ModalContent>
-        {renderModalContent()}
-      </ModalContent>
-    </BaseModal>,
+          open={open}
+          onClose={handleClose}
+          slots={{ backdrop: Backdrop }}
+          closeAfterTransition
+          className={backdropClassName}
+        >
+          <ModalContent className={overrideClassNameFn()}>
+            {renderModalContent()}
+          </ModalContent>
+        </BaseModal>,
     document?.body
   );
 });
 
-const ModalContent = (props: PropsWithChildren) => {
+const ModalContent = (
+  props: PropsWithChildren & {
+    className?: string;
+  }
+) => {
+  const { className: overrideClassName = "", children } = props;
+  const nestedDivRef = useRef<HTMLDivElement>(null);
+
+  const className = classNames(
+    "relative flex flex-col gap-[8px] overflow-hidden text-start bg-background shadow border-[1px] rounded",
+    overrideClassName
+  );
+
   return (
-    <div
-      className="relative flex flex-col gap-[8px] overflow-hidden text-start bg-background shadow border-[1px] rounded"
-      {...props}
-    />
+    <div ref={nestedDivRef} className={className}>
+      {children}
+    </div>
   );
 };
 

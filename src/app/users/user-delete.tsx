@@ -26,8 +26,7 @@ const UserDelete = (props: UserDeleteProps) => {
   const onYesDelete = async (confirmationModal: ModalRenderProps) => {
 
     try {
-      const result = await deleteUser({ userId: userId })
-      console.log({result})
+      await deleteUser({ userId: userId })
       confirmationModal.close();
     } catch (error) {
       console.error(error)      

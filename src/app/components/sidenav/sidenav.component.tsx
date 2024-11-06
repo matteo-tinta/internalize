@@ -20,7 +20,7 @@ const Sidenav = () => {
   return (
     <div className={
       classNames(
-        "max-w-[230px] shadow shadow-violet-500 min-w-[55px] h-[100vh] relative p-2 bg-sidenav",
+        "max-w-[230px] shadow shadow-violet-500 min-w-[55px] h-[100vh] relative p-2 bg-sidenav overflow-hidden",
         {
           "!min-w-[230px]": isSidenavOpen
         }

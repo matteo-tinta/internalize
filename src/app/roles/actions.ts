@@ -4,7 +4,8 @@ import { Container } from "../lib/services/container.service";
 
 const loadAllRoles = async () => {
   return await Container(async ({ roleService }) => {
-    return await roleService.all();
+    const roles = await roleService.all();
+    return roles.map(r => r.toObject())
   });
 };
 

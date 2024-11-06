@@ -4,6 +4,7 @@ import "./globals.css";
 import "./tables.css";
 import "./inputs.css";
 import "./buttons.css";
+import "./modal.css";
 
 import { Sidenav } from "./components/sidenav/sidenav.component";
 
@@ -25,8 +26,10 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  modal,
   children,
 }: Readonly<{
+  modal: React.ReactNode;
   children: React.ReactNode;
 }>) {
   return (
@@ -36,6 +39,7 @@ export default function RootLayout({
       >
         <div className="flex">
           <Sidenav></Sidenav>
+          <section>{modal}</section>
           <section className="w-full px-2">{children}</section>
         </div>
       </body>
