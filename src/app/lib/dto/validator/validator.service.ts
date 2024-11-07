@@ -14,9 +14,13 @@ export class FormDataValidationException extends Error {
 }
 
 export class ValidatorService {
-  public validate<T>(schema: ZodTypeAny, data: FormData): T {
+  public validateForm<T>(schema: ZodTypeAny, data: FormData): T {
     const objectEntries = Object.fromEntries(data)
-    const validatedObject = schema.safeParse(objectEntries)
+    return this.validate(schema, objectEntries)
+  }
+
+  public validate<T>(schema: ZodTypeAny, data: unknown): T {
+    const validatedObject = schema.safeParse(data)
     if(!validatedObject.success) {
       throw new FormDataValidationException(validatedObject.error)
     }

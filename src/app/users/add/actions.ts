@@ -15,7 +15,7 @@ const addUser: ActionType = async (
   try {
     return await Container(
       async ({ userService, formDataValidationService, revalidate }) => {
-        const data = formDataValidationService.validate<CreateUserDto>(
+        const data = formDataValidationService.validateForm<CreateUserDto>(
           CreateUserSchema,
           formData
         );

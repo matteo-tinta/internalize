@@ -18,6 +18,7 @@ export type ModalRenderProps = {
 export type ModalRef = {
   isOpen: boolean;
   open: () => void;
+  close: () => void;
 };
 
 export type ModalProps = {
@@ -54,6 +55,7 @@ const Modal = forwardRef((props: ModalProps, ref: Ref<ModalRef>) => {
     () => ({
       isOpen: open,
       open: handleOpen,
+      close: handleClose,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

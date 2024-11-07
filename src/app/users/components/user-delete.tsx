@@ -1,21 +1,20 @@
 "use client";
 
-import { ConfirmationModal } from "@/app/components/modal/confirmation.modal.component";
-import { ModalRef, ModalRenderProps } from "@/app/components/modal/modal.component";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "../../components/form/button";
 import { useRef } from "react";
-import { Button } from "@/app/components/form/button";
-import { removeRoleFromUser } from "./actions";
+import { deleteUser } from "../actions";
+import { onClickStopPropagation } from "../../lib/helpers/dom-events.helpers";
+import { ConfirmationModal } from "@/app/components/modal/confirmation.modal.component";
+import { ModalRef, ModalRenderProps } from "@/app/components/modal/modal.component";
 
-type UserRoleProps = {
+type UserDeleteProps = {
   userId: string;
-  role: string | undefined;
-  disabled?: boolean;
 };
 
-const UserRoleDelete = (props: UserRoleProps) => {
-  const { userId, role } = props;
+const UserDelete = (props: UserDeleteProps) => {
+  const { userId } = props;
   const confirmationModal = useRef<ModalRef>(null);
 
   const openConfirmationDialog = () => {
@@ -25,7 +24,7 @@ const UserRoleDelete = (props: UserRoleProps) => {
   const onYesDelete = async (confirmationModal: ModalRenderProps) => {
 
     try {
-      await removeRoleFromUser({ userId: userId, role: role! })
+      await deleteUser({ userId: userId })
       confirmationModal.close();
     } catch (error) {
       console.error(error)      
@@ -35,8 +34,8 @@ const UserRoleDelete = (props: UserRoleProps) => {
 
   return (
     <>
-      <Button disabled={props.disabled} className="text-red-500 disabled:text-gray-400" variant="simple" onClick={openConfirmationDialog}>
-        <FontAwesomeIcon icon={faTrash} />
+      <Button variant="simple" onClick={onClickStopPropagation(openConfirmationDialog)()}>
+        <FontAwesomeIcon className="text-red-500" icon={faTrash} />
       </Button>
       <ConfirmationModal.Modal
         onYes={onYesDelete}
@@ -44,14 +43,15 @@ const UserRoleDelete = (props: UserRoleProps) => {
         ref={confirmationModal}
       >
         <ConfirmationModal.Title>
-          Are you sure you want to remove {role} from {userId}?
+          Are you sure you want to delete user {userId}?
         </ConfirmationModal.Title>
         <ConfirmationModal.Content>
-          This will remove <b className="text-red-500">Permanently</b> the role {role}
+          Deleting this user will delete also its roles and actions{" "}
+          <b className="text-red-500">Permanently</b>
         </ConfirmationModal.Content>
       </ConfirmationModal.Modal>
     </>
   );
 };
 
-export { UserRoleDelete };
+export { UserDelete };

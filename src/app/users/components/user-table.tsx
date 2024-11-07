@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { UserType } from "../lib/domain/user/user.domain";
+import { UserType } from "../../lib/domain/user/user.domain";
 import { UserDelete } from "./user-delete";
 
 type UserTableProps = {

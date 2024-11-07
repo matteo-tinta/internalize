@@ -1,32 +1,19 @@
-"use server"
+"use server";
 
-import { Container } from "../lib/services/container.service"
+import { Promise } from "mongoose";
+import { action } from "../lib/helpers/form.helpers";
+import { Container } from "../lib/services/container.service";
 
-export const loadUsers = async () => {
-  try {
-    return await Container(
-      async ({ userService }) => {
-        return await userService.all()
-      }
-    )
-  } catch {
-    return []
-  }
-}
+export const loadUsers = action(
+  async () => Container(async ({ userService }) => {
+    return await userService.all();
+  })
+)
 
-export const deleteUser = async (props: {userId: string}) => {
-  const { userId } = props
+export const deleteUser = action(async (props: { userId: string }) =>
+  Container(async ({ userService, revalidate }) => {
+    await userService.deleteUserAsync(props.userId);
 
-  try {
-    return await Container(
-      async ({userService, revalidate}) => {
-        await userService.deleteUserAsync(userId)
-
-        revalidate.users()
-      }
-    )
-  } catch {
-    return []
-  }
-}
-
+    revalidate.users();
+  })
+);

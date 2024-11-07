@@ -1,6 +1,6 @@
 import { Page } from "../components/page"
 import { loadAllRoles } from "./actions"
-import { AddRoleForm } from "./add/page"
+import { AddRoleForm } from "./components/add-role-form.component"
 import { RoleDelete } from "./role-delete"
 
 const RolePage = async () => {

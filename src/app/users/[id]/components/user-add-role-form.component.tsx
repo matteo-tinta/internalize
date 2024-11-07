@@ -1,8 +1,8 @@
 import { Field } from "@/app/components/form/field";
-import { InternalizeForm } from "@/app/components/form/form";
 import { addRoleToUser } from "../actions";
 import { IRole } from "@/app/lib/domain/role/role.domain";
 import { Autocomplete } from "@/app/components/form/autocomplete";
+import { InternalizeForm } from "@/app/components/form/internalize-form/internalize.form";
 
 type UserAddRoleFormProps = {
   userId: string;
@@ -17,13 +17,14 @@ const UserAddRoleForm = (props: UserAddRoleFormProps) => {
     userRoles
   } = props
 
-  const availableRoles = allRoles.filter(role => !userRoles.some(userRole => userRole.name == role.name))
+  const availableRoles = allRoles
+    .filter(role => !userRoles.some(userRole => userRole.name == role.name))
 
   return (
     <InternalizeForm
       className="w-full"
       action={addRoleToUser}
-      render={(status, state, form) => {
+      render={({status, form}) => {
 
         const handleSubmit = () => {
           if (form.current) {

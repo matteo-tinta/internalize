@@ -1,6 +1,6 @@
 import { loadUsers } from "./actions";
 import { AddUserForm } from "./add/page";
-import { UserTable } from "./user-table";
+import { UserTable } from "./components/user-table";
 
 const UserPage = async () => {
   const users = await loadUsers();

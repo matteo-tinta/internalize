@@ -1,19 +1,16 @@
 "use client"
 
 import { Field } from "@/app/components/form/field"
-import { InternalizeForm } from "@/app/components/form/form"
-import { Input } from "@/app/components/form/input"
 import { InputError } from "@/app/components/form/input-error"
-import { Page } from "../../components/page"
-import { addRole } from "./actions"
+import { InternalizeForm } from "@/app/components/form/internalize-form/internalize.form"
+import { addRole } from "../actions"
+import { Input } from "@/app/components/form/input"
 import { Button } from "@/app/components/form/button"
 
-export const AddRoleForm = () => {
-  
-
+const AddRoleForm = () => {
   return (
     <InternalizeForm action={addRole}
-      render={(status, state) => (
+      render={({status, state}) => (
         <>
           <Field>
             <Input 
@@ -33,15 +30,6 @@ export const AddRoleForm = () => {
   )
 }
 
-const AddRolePage = () => {
-  return (
-    <Page>
-      <section>
-        <h1> Add Role </h1>
-        <p> Add here a new role </p>
-      </section>
-    </Page>
-  )
+export {
+  AddRoleForm
 }
-
-export default AddRolePage

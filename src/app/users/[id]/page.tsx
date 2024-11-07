@@ -1,7 +1,5 @@
-"use client";
-
 import { loadPageData } from "./actions";
-import { UserPage } from "./user-page";
+import { UserPage } from "./components/user-page";
 
 const Page = () => {
   return (

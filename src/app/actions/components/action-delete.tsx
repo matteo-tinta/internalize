@@ -1,15 +1,12 @@
 "use client";
 
+import { ConfirmationModal } from "@/app/components/modal/confirmation.modal.component";
+import { ModalRef, ModalRenderProps } from "@/app/components/modal/modal.component";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "../components/form/button";
 import { useRef } from "react";
-import {
-  ModalRef,
-  ModalRenderProps,
-} from "../components/modal/modal.component";
-import { ConfirmationModal } from "../components/modal/confirmation.modal.component";
-import { deleteAction } from "./actions";
+import { deleteAction } from "../actions";
+import { Button } from "@/app/components/form/button";
 
 type ActionDeleteProps = {
   name: string;

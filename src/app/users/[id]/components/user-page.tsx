@@ -1,18 +1,21 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { loadPageData } from "./actions";
-import { UserAddRoleForm } from "./user-add-role-form/user-add-role-form.component";
-import { UserHeading } from "./user-title/user-title.component";
-import { useEffect, useState } from "react";
+import { loadPageData } from "../actions";
+import { useEffect, useId, useState } from "react";
 import { IRole } from "@/app/lib/domain/role/role.domain";
-import { UserRoleDelete } from "./user-delete";
+import { UserRoleDelete } from "./user-role-delete";
+import { UserAddRoleForm } from "./user-add-role-form.component";
+import { UserHeading } from "./user-title.component";
+import { useDate } from "@/app/hooks/useDate.hook";
 
 type UserPageProps = {
   loadPageData: typeof loadPageData;
 };
 
 const UserPage = (props: UserPageProps) => {
+  const {iso} = useDate()
+
   const { id: userIdEncoded } = useParams<{ id: string }>();
   const userId = decodeURIComponent(userIdEncoded ?? "");
 
@@ -45,7 +48,7 @@ const UserPage = (props: UserPageProps) => {
           </thead>
           <tbody>
             {roles.userRoles.map((role, i) => (
-              <tr key={role.name}>
+              <tr key={i}>
                 <td>{i + 1}</td>
                 <td>{role.name}</td>
                 <td>
@@ -56,7 +59,7 @@ const UserPage = (props: UserPageProps) => {
             <tr>
               <td>{roles.userRoles.length + 1}</td>
               <td className="flex items-center align-middle">
-                <UserAddRoleForm {...roles} userId={userId} />
+                <UserAddRoleForm key={iso} {...roles} userId={userId} />
               </td>
               <td>
                 <UserRoleDelete

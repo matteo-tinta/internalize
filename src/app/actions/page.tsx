@@ -1,7 +1,7 @@
 import { Page } from "../components/page";
-import { ActionDelete } from "./action-delete";
 import { listActions } from "./actions";
-import { CreateActionForm } from "./create/page";
+import { ActionDelete } from "./components/action-delete";
+import { CreateActionForm } from "./components/create-action-form.component";
 
 const ActionsPage = async () => {
   const actions = await listActions();

@@ -1,17 +1,17 @@
 "use client"
 import { Button } from "@/app/components/form/button"
 import { Field } from "@/app/components/form/field"
-import { InternalizeForm } from "@/app/components/form/form"
 import { Input } from "@/app/components/form/input"
 import { Page } from "@/app/components/page"
 import { addUser } from "./actions"
 import { InputError } from "@/app/components/form/input-error"
+import { InternalizeForm } from "@/app/components/form/internalize-form/internalize.form"
 
 export const AddUserForm = () => {
   
   return (
     <InternalizeForm action={addUser}
-      render={(status, state) => (
+      render={({status, state}) => (
         <>
           <Field>
             <Input 
