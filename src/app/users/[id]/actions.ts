@@ -43,8 +43,28 @@ const addRoleToUser: ActionType = async (state, formData) => {
   }
 }
 
+const removeRoleFromUser = async (props: {userId: string, role: string}) => {
+  const {
+    userId,
+    role
+  } = props
+
+  try {
+    return await Container(
+      async ({roleService, revalidate}) => {
+        await roleService.removeRoleFromUser(userId, role)
+
+        revalidate.userRoles(userId)
+      }
+    )
+  } catch {
+    return []
+  }
+}
+
 export {
   addRoleToUser,
   loadRolesByUserId,
-  loadPageData
+  loadPageData,
+  removeRoleFromUser
 }

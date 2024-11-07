@@ -1,15 +1,16 @@
-"use client"
+"use client";
 
-import { useParams } from "next/navigation"
-import { loadPageData } from "./actions"
-import { UserAddRoleForm } from "./user-add-role-form/user-add-role-form.component"
-import { UserHeading } from "./user-title/user-title.component"
-import { useEffect, useState } from "react"
-import { IRole } from "@/app/lib/domain/role/role.domain"
+import { useParams } from "next/navigation";
+import { loadPageData } from "./actions";
+import { UserAddRoleForm } from "./user-add-role-form/user-add-role-form.component";
+import { UserHeading } from "./user-title/user-title.component";
+import { useEffect, useState } from "react";
+import { IRole } from "@/app/lib/domain/role/role.domain";
+import { UserRoleDelete } from "./user-delete";
 
 type UserPageProps = {
-  loadPageData: typeof loadPageData
-}
+  loadPageData: typeof loadPageData;
+};
 
 const UserPage = (props: UserPageProps) => {
   const { id: userIdEncoded } = useParams<{ id: string }>();
@@ -24,8 +25,8 @@ const UserPage = (props: UserPageProps) => {
   });
 
   useEffect(() => {
-    props.loadPageData(userId).then(setRoles)
-  }, [props, userId])
+    props.loadPageData(userId).then(setRoles);
+  }, [props, userId]);
 
   return (
     <>
@@ -47,7 +48,9 @@ const UserPage = (props: UserPageProps) => {
               <tr key={role.name}>
                 <td>{i + 1}</td>
                 <td>{role.name}</td>
-                <td>{/* <RoleDelete name={role.name} /> */}</td>
+                <td>
+                  <UserRoleDelete userId={userId} role={role.name} />
+                </td>
               </tr>
             ))}
             <tr>
@@ -55,15 +58,19 @@ const UserPage = (props: UserPageProps) => {
               <td className="flex items-center align-middle">
                 <UserAddRoleForm {...roles} userId={userId} />
               </td>
-              <td> &nbsp; </td>
+              <td>
+                <UserRoleDelete
+                  userId={userId}
+                  role={undefined}
+                  disabled={true}
+                />
+              </td>
             </tr>
           </tbody>
         </table>
       </section>
     </>
   );
-}
+};
 
-export {
-  UserPage
-}
+export { UserPage };

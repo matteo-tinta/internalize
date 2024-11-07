@@ -55,6 +55,7 @@ export class RoleService extends BaseService {
       throw new ServiceException(`role ${role} or user ${userId} does not exist`);
     }
 
+    await actualUser.populate("roles")
     actualUser.roles = [
       ...actualUser.roles,
       actualDbRole
@@ -75,5 +76,24 @@ export class RoleService extends BaseService {
     await this.uof.commitAsync(
       async () => this.repository.deleteRoleAsync(actualDbRole)
     )
+  }
+
+  async removeRoleFromUser(userId: string, role: string) {
+    const actualDbRole = await this.repository.getRoleByNameAsync(role);
+    const actualUser = await this.userRepository.getUserByIdAsync(userId);
+
+    if (!actualDbRole || !actualUser) {
+      throw new ServiceException(`role ${role} or user ${userId} does not exist`);
+    }
+
+    actualUser.roles = actualUser.roles.filter(f => f._id.toString() != actualDbRole._id.toString())
+
+    console.log({
+      actualUser
+    })
+
+    await this.uof.commitAsync(async () => {
+      await actualUser.save()
+    });
   }
 }

@@ -47,7 +47,7 @@ const UserAddRoleForm = (props: UserAddRoleFormProps) => {
               label={o => o.name}
               id="role"
               name="role"
-              disabled={!availableRoles.length}
+              disabled={!availableRoles.length || status.pending}
               placeholder="add a new role"
               componentName="role"
               options={availableRoles}
