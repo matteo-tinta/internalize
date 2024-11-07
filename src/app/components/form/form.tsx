@@ -1,6 +1,6 @@
 import { ActionType, FormState } from "@/app/lib/dto/form/form.definitions";
 import Form, { FormProps } from "next/form";
-import { useActionState, useEffect, useRef } from "react";
+import { RefObject, useActionState, useEffect, useRef } from "react";
 import { createPortal, useFormStatus } from "react-dom";
 import { Snackbar, SnackbarPropsCallback, SnackbarRef } from "../snackbar/snackbar";
 
@@ -8,7 +8,8 @@ type InternalizeFormProps = Omit<FormProps, "action"> & {
   action: ActionType;
   render: (
     status: ReturnType<typeof useFormStatus>,
-    state: FormState
+    state: FormState,
+    form: RefObject<HTMLFormElement>
   ) => JSX.Element;
 };
 
@@ -76,14 +77,15 @@ const InternalizeSnackbackResponse = (props: {
 }
 
 const InternalizeInnerForm = (
-  props: InternalizeFormProps & { state: FormState }
+  props: InternalizeFormProps & { state: FormState, formRef: RefObject<HTMLFormElement> }
 ) => {
   const formStatus = useFormStatus();
-  const { state, render } = props;
+  const { state, render, formRef } = props;
 
+  
   return (
     <>
-      {render(formStatus, state)}
+      {render(formStatus, state, formRef)}
 
       <InternalizeSnackbackResponse 
         state={state}
@@ -100,14 +102,16 @@ const InternalizeForm = (props: InternalizeFormProps) => {
     action: inputAction,
     ...formProps
   } = props;
+  const ref = useRef<HTMLFormElement>(null);
+
   const [state, action] = useActionState<FormState, FormData>(
     inputAction,
     undefined as unknown as FormState
   );
 
   return (
-    <Form {...formProps} action={action}>
-      <InternalizeInnerForm {...props} state={state as FormState} />
+    <Form {...formProps} action={action} ref={ref}>
+      <InternalizeInnerForm {...props} formRef={ref} state={state as FormState} />
     </Form>
   );
 };

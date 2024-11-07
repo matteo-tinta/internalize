@@ -1,6 +1,6 @@
 import mongoose, { Model, model, Schema } from "mongoose";
 
-interface IRole {
+export interface IRole {
   name: string
 }
 

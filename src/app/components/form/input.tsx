@@ -6,7 +6,7 @@ const Input = (props: InputProps) => {
       slotProps={{
         input: {
           className:
-            "",
+            props.className,
         },
       }}
       {...props}

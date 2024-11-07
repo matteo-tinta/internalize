@@ -17,7 +17,7 @@ type ContainerExecuteDependencies = {
   revalidate: typeof revalidate
 }
 
-type ContainerExecuteFunction<T> = (deps: ContainerExecuteDependencies) => Promise<T | undefined>
+type ContainerExecuteFunction<T> = (deps: ContainerExecuteDependencies) => Promise<T>
 
 const Container = async <T,>(
   execute: ContainerExecuteFunction<T>
@@ -37,7 +37,7 @@ const Container = async <T,>(
   const actionService = new ActionsService(actionRepository, uof)
   const formDataValidationService = new ValidatorService()
 
-  let result: T | undefined = undefined
+  let result: T;
 
   try {
     result = await execute({

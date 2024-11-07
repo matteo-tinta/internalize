@@ -14,3 +14,16 @@ export const withTryCatchLogging = async <T>(callback: () => T | PromiseLike<T>,
     throw error
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type FunctionLike = (...args: any[]) => unknown
+
+export const withLogger = 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  (logFn: (...args: unknown[]) => void) => 
+    <T extends FunctionLike,>(callback: T) => 
+      (...args: Parameters<T>) => {
+  logFn(...args)
+
+  callback(...args)
+}

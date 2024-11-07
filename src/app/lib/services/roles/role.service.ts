@@ -47,6 +47,24 @@ export class RoleService extends BaseService {
     });
   };
 
+  addRoleToUserAsync = async (userId: string, role: string) => {
+    const actualDbRole = await this.repository.getRoleByNameAsync(role);
+    const actualUser = await this.userRepository.getUserByIdAsync(userId);
+
+    if (!actualDbRole || !actualUser) {
+      throw new ServiceException(`role ${role} or user ${userId} does not exist`);
+    }
+
+    actualUser.roles = [
+      ...actualUser.roles,
+      actualDbRole
+    ]
+
+    await this.uof.commitAsync(async () => {
+      await actualUser.save()
+    });
+  }
+
   async deleteRoleAsync(name: string) {
     const actualDbRole = await this.repository.getRoleByNameAsync(name);
 
