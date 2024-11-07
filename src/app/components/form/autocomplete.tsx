@@ -55,8 +55,8 @@ function Autocomplete<T extends unknown[],>(
         ref={rootRef}
         className={clsx(
           'flex gap-[5px] pr-[5px] overflow-hidden w-full rounded-lg bg-white border border-solid border-gray-200 hover:border-violet-400 focus-visible:outline-0 shadow',
-          focused &&
-            'shadow-md',
+          focused && 'shadow-md',
+          disabled && 'bg-gray-200 !shadow-none hover:border-none'
         )}
       >
         <input
@@ -65,7 +65,7 @@ function Autocomplete<T extends unknown[],>(
           readOnly={readOnly}
           {...getInputProps()}
           name={props.name}
-          className="text-foreground text-sm leading-[1.5] !shadow-none text-gray-900 bg-inherit border-0 rounded-[inherit] px-3 py-2 outline-0 grow shrink-0 basis-auto"
+          className="text-sm leading-[1.5] !shadow-none text-foreground bg-inherit border-0 rounded-[inherit] px-3 py-2 outline-0 grow shrink-0 basis-auto !disabled:text-gray-500"
         />
         {hasClearIcon && (
           <Button

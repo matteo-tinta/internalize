@@ -3,6 +3,7 @@
 import { handleError } from "@/app/actions"
 import { ActionType, FormState } from "@/app/lib/dto/form/form.definitions"
 import { AddRoleToUserDto, AddRoleToUserSchema } from "@/app/lib/dto/role/addRoleToUserDto"
+import { roleToDto } from "@/app/lib/dto/role/role-dto.model"
 import { Container } from "@/app/lib/services/container.service"
 import { loadAllRoles } from "@/app/roles/actions"
 
@@ -17,7 +18,7 @@ const loadRolesByUserId = async (userId: string) => {
   return await Container(
     async ( { roleService } ) => {
       const roles = await roleService.getRolesByUserId(userId)
-      return roles.map(r => r.toObject())
+      return roles.map(roleToDto)
     }
   )
 }

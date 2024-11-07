@@ -5,7 +5,7 @@ export interface IRole {
 }
 
 const roleSchema = new Schema<IRole>({
-  name: { type: String, required: true }
+  name: { type: String, required: true },
 })
 
 const RoleModel: Model<IRole> = mongoose.models["Role"] || model<IRole>("Role", roleSchema)

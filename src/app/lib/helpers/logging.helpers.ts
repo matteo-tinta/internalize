@@ -16,7 +16,7 @@ export const withTryCatchLogging = async <T>(callback: () => T | PromiseLike<T>,
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type FunctionLike = (...args: any[]) => unknown
+export type FunctionLike<T = unknown> = (...args: any[]) => T
 
 export const withLogger = 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type

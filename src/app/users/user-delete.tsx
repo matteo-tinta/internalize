@@ -10,6 +10,7 @@ import {
 } from "../components/modal/modal.component";
 import { ConfirmationModal } from "../components/modal/confirmation.modal.component";
 import { deleteUser } from "./actions";
+import { onClickStopPropagation } from "../lib/helpers/dom-events.helpers";
 
 type UserDeleteProps = {
   userId: string;
@@ -36,7 +37,7 @@ const UserDelete = (props: UserDeleteProps) => {
 
   return (
     <>
-      <Button variant="simple" onClick={openConfirmationDialog}>
+      <Button variant="simple" onClick={onClickStopPropagation(openConfirmationDialog)()}>
         <FontAwesomeIcon className="text-red-500" icon={faTrash} />
       </Button>
       <ConfirmationModal.Modal
