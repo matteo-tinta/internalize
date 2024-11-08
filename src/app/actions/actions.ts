@@ -1,6 +1,7 @@
 "use server"
 
 import { handleError } from "../actions";
+import { actionToDto } from "../lib/dto/action/action.model";
 import { CreateActionDto, CreateActionSchema } from "../lib/dto/action/createActionDto.model";
 import { ActionType } from "../lib/dto/form/form.definitions";
 import { Container } from "../lib/services/container.service"
@@ -26,7 +27,8 @@ export const createAction: ActionType = async (state, formData) => {
 export const listActions = async () => {
   return await Container(
     async ( {actionService} ) => {
-      return await actionService.all()
+      const actions = await actionService.all()
+      return actions.map(actionToDto)
     }
   )
 }

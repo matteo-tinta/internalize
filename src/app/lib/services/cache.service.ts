@@ -11,7 +11,8 @@ const revalidate = {
   users: () => revalidateFnWithLogging("/users"),
   actions: () => revalidateFnWithLogging("/actions"),
   roles: () => revalidateFnWithLogging("/roles"),
-  userRoles: (userId: string) => revalidateFnWithLogging(`/users/${userId}`, "page")
+  userRoles: (userId: string) => revalidateFnWithLogging(`/users/${userId}`, "page"),
+  roleActions: (name: string) => revalidateFnWithLogging(`/roles/${name}`, "page")
 }
 
 export {

@@ -1,20 +1,20 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { loadPageData } from "../actions";
 import { useEffect, useState } from "react";
 import { IRole } from "@/app/lib/domain/role/role.domain";
 import { UserRoleDelete } from "./user-role-delete";
 import { UserAddRoleForm } from "./user-add-role-form.component";
 import { UserHeading } from "./user-title.component";
-import { useDate } from "@/app/hooks/useDate.hook";
-import { useSnackbar } from "@/app/components/snackbar/snackbar.context";
 
 type UserPageProps = {
   loadPageData: typeof loadPageData;
 };
 
 const UserPage = (props: UserPageProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
 
   const { id: userIdEncoded } = useParams<{ id: string }>();
   const userId = decodeURIComponent(userIdEncoded ?? "");
@@ -48,7 +48,11 @@ const UserPage = (props: UserPageProps) => {
           </thead>
           <tbody>
             {roles.userRoles.map((role, i) => (
-              <tr key={i}>
+              <tr
+                key={i}
+                className="cursor-pointer"
+                onClick={() => router.push(`/roles/${role.name}`)}
+              >
                 <td>{i + 1}</td>
                 <td>{role.name}</td>
                 <td>
@@ -56,6 +60,7 @@ const UserPage = (props: UserPageProps) => {
                 </td>
               </tr>
             ))}
+
             <tr>
               <td>{roles.userRoles.length + 1}</td>
               <td className="flex items-center align-middle">

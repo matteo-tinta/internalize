@@ -34,7 +34,7 @@ const Container = async <T,>(
   //services
   const userService = new UserService(userRepository, uof)
   const roleService = new RoleService(roleRepository, userRepository, uof)
-  const actionService = new ActionsService(actionRepository, uof)
+  const actionService = new ActionsService(actionRepository, roleRepository, uof)
   const formDataValidationService = new ValidatorService()
 
   let result: T;

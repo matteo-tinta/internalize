@@ -1,6 +1,7 @@
 import { Page } from "../components/page"
 import { loadAllRoles } from "./actions"
 import { AddRoleForm } from "./components/add-role-form.component"
+import { RoleTable } from "./components/role-table.component"
 import { RoleDelete } from "./role-delete"
 
 const RolePage = async () => {
@@ -17,34 +18,7 @@ const RolePage = async () => {
           <AddRoleForm />
         </section>
 
-        <table className="w-full mt-4">
-          <thead>
-            <tr>
-              <th>
-                #
-              </th>
-              <th>
-                Role
-              </th>
-              <th>
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              roles?.map((role, i) => (
-                <tr key={role.name}>
-                  <td>{i + 1}</td>
-                  <td>{role.name}</td>
-                  <td>
-                    <RoleDelete name={role.name} />
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
+        <RoleTable roles={roles} />
       </section>
     </Page>
   )
