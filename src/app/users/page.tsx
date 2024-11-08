@@ -14,7 +14,6 @@ const UserPage = async () => {
       </p>
 
       <section className="my-2">
-        <h2>Internalize a new user</h2>
         <AddUserForm />
       </section>
 
