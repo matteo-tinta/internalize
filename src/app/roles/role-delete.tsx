@@ -9,6 +9,7 @@ import { ConfirmationModal } from "../components/modal/confirmation.modal.compon
 import { deleteRole } from "./actions";
 import { FormState } from "../lib/dto/form/form.definitions";
 import { InternalizeAction } from "../components/form/internalize-form/internalize-action.form";
+import { onClickStopPropagation } from "../lib/helpers/dom-events.helpers";
 
 type RoleDeleteProps = {
   name: string;
@@ -46,7 +47,7 @@ const RoleDelete = (props: RoleDeleteProps) => {
               type="button"
               className="text-red-500 disabled:text-gray-400"
               variant="simple"
-              onClick={openConfirmationDialog}
+              onClick={onClickStopPropagation(openConfirmationDialog)()}
             >
               <FontAwesomeIcon icon={faTrash} />
             </Button>

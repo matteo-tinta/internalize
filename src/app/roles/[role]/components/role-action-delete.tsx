@@ -11,6 +11,7 @@ import { Button } from "@/app/components/form/button";
 import { InternalizeAction } from "@/app/components/form/internalize-form/internalize-action.form";
 import { FormState } from "@/app/lib/dto/form/form.definitions";
 import { removeActionFromRole } from "../actions";
+import { onClickStopPropagation } from "@/app/lib/helpers/dom-events.helpers";
 
 type RoleActionProps = {
   role: string;
@@ -49,7 +50,7 @@ const RoleActionDelete = (props: RoleActionProps) => {
               type="button"
               className="text-red-500 disabled:text-gray-400"
               variant="simple"
-              onClick={openConfirmationDialog}
+              onClick={onClickStopPropagation(openConfirmationDialog)()}
             >
               <FontAwesomeIcon icon={faTrash} />
             </Button>

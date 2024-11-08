@@ -11,6 +11,7 @@ import { Button } from "@/app/components/form/button";
 import { removeRoleFromUser } from "../actions";
 import { InternalizeAction } from "@/app/components/form/internalize-form/internalize-action.form";
 import { FormState } from "@/app/lib/dto/form/form.definitions";
+import { onClickStopPropagation } from "@/app/lib/helpers/dom-events.helpers";
 
 type UserRoleProps = {
   userId: string;
@@ -49,7 +50,7 @@ const UserRoleDelete = (props: UserRoleProps) => {
               type="button"
               className="text-red-500 disabled:text-gray-400"
               variant="simple"
-              onClick={openConfirmationDialog}
+              onClick={onClickStopPropagation(openConfirmationDialog)()}
             >
               <FontAwesomeIcon icon={faTrash} />
             </Button>
