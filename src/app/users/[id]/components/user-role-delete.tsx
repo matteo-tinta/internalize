@@ -3,16 +3,14 @@
 import { ConfirmationModal } from "@/app/components/modal/confirmation.modal.component";
 import {
   ModalRef,
-  ModalRenderProps,
 } from "@/app/components/modal/modal.component";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { forwardRef, Ref, Suspense, useRef } from "react";
+import { forwardRef, Ref, useRef } from "react";
 import { Button } from "@/app/components/form/button";
 import { removeRoleFromUser } from "../actions";
 import { InternalizeAction } from "@/app/components/form/internalize-form/internalize-action.form";
 import { FormState } from "@/app/lib/dto/form/form.definitions";
-import { useSnackbar } from "@/app/components/snackbar/snackbar.context";
 
 type UserRoleProps = {
   userId: string;
@@ -27,26 +25,21 @@ type UserRoleDeleteConfirmationDialogProps = UserRoleProps &
 
 const UserRoleDelete = (props: UserRoleProps) => {
   const { userId, role } = props;
-  const { notify } = useSnackbar()
+ 
   const confirmationModal = useRef<ModalRef>(null);
-
   const openConfirmationDialog = () => {
     confirmationModal.current?.open();
   };
 
   return (
-    <InternalizeAction<FormState, { userId: string; role: string }>
+    <InternalizeAction
       action={removeRoleFromUser}
       onSubmitSuccess={() => {
         confirmationModal.current?.close();
-        notify({
-          id: `success-role-add-${role}`,
-          content: `${role} was successfully removed from ${userId}`
-        })
       }}
       render={({ pending, errors, message, submit }) => {
-        const handleSubmit = () => {
-          submit({ userId, role: role! });
+        const handleSubmit = async () => {
+          await submit({ userId, role: role! });
         };
 
         return (
@@ -78,7 +71,7 @@ const UserRoleDelete = (props: UserRoleProps) => {
 
 const UserRoleDeleteConfirmationDialog = forwardRef(
   (props: UserRoleDeleteConfirmationDialogProps, ref: Ref<ModalRef>) => {
-    const { role, userId, submit, disabled, errors, message } = props;
+    const { role, userId, submit, disabled } = props;
 
     return (
       <ConfirmationModal.Modal
@@ -93,22 +86,13 @@ const UserRoleDeleteConfirmationDialog = forwardRef(
         <ConfirmationModal.Content>
           This will remove <b className="text-red-500">Permanently</b> the role{" "}
           {role}
-          {errors && (
-            <div className="bg-red-500 mt-2 rounded p-2">
-              <p>{message}</p>
-              <p className="text-sm">
-                {Object.entries(errors).map(([key, error]) => (
-                  <div>
-                    {key.toUpperCase()}: {error}
-                  </div>
-                ))}
-              </p>
-            </div>
-          )}
+          <ConfirmationModal.Errors {...props} />
         </ConfirmationModal.Content>
       </ConfirmationModal.Modal>
     );
   }
 );
+
+UserRoleDeleteConfirmationDialog.displayName = "UserRoleDeleteConfirmationDialog"
 
 export { UserRoleDelete };

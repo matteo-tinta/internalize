@@ -15,9 +15,6 @@ type UserPageProps = {
 };
 
 const UserPage = (props: UserPageProps) => {
-  
-
-  const {iso} = useDate()
 
   const { id: userIdEncoded } = useParams<{ id: string }>();
   const userId = decodeURIComponent(userIdEncoded ?? "");
@@ -62,7 +59,7 @@ const UserPage = (props: UserPageProps) => {
             <tr>
               <td>{roles.userRoles.length + 1}</td>
               <td className="flex items-center align-middle">
-                <UserAddRoleForm key={iso} {...roles} userId={userId} />
+                <UserAddRoleForm {...roles} userId={userId} />
               </td>
               <td>
                 <UserRoleDelete

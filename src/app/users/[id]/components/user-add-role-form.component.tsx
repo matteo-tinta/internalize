@@ -3,6 +3,7 @@ import { addRoleToUser } from "../actions";
 import { IRole } from "@/app/lib/domain/role/role.domain";
 import { Autocomplete } from "@/app/components/form/autocomplete";
 import { InternalizeForm } from "@/app/components/form/internalize-form/internalize.form";
+import { useDate } from "@/app/hooks/useDate.hook";
 
 type UserAddRoleFormProps = {
   userId: string;
@@ -16,7 +17,7 @@ const UserAddRoleForm = (props: UserAddRoleFormProps) => {
     allRoles,
     userRoles
   } = props
-
+  const {iso} = useDate()
   const availableRoles = allRoles
     .filter(role => !userRoles.some(userRole => userRole.name == role.name))
 
@@ -43,6 +44,7 @@ const UserAddRoleForm = (props: UserAddRoleFormProps) => {
               value={decodeURIComponent(userId)}
             />
             <Autocomplete<IRole[]>
+              key={iso} 
               onBlur={handleSubmit}
               getOptionLabel={(o) => o.name}
               label={o => o.name}

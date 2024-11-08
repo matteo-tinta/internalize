@@ -2,53 +2,55 @@
 
 import { FormState } from "@/app/lib/dto/form/form.definitions";
 import { useFormStatus } from "react-dom";
-import { ReactNode, useActionState, useEffect, useState, useTransition } from "react";
+import { ReactNode } from "react";
+import { useSnackbar } from "../../snackbar/snackbar.context";
+import { useInternalizeAction } from "@/app/hooks/useServerAction";
+import { FunctionLike } from "@/app/lib/helpers/logging.helpers";
 
 
-type InternalizeActionProps<TFormState extends FormState, TFormPayload = FormData> = {
+type InternalizeActionProps<TFormAction extends FunctionLike<Promise<FormState>>> = {
   onSubmitSuccess?: () => void;
-  render: (props: InternalizeActionRenderProps<TFormPayload>) => ReactNode;
-  action: (payload: TFormPayload) => TFormState | Promise<TFormState>, 
-  initialState?: Awaited<TFormState>, 
+  action: TFormAction;
+  render: (props: InternalizeActionRenderProps<TFormAction>) => ReactNode
+  notifyFromServer?: boolean
   permalink?: string
 }
 
-type InternalizeActionRenderProps<TFormPayload = FormData> = FormState & {
+type InternalizeActionRenderProps<TFormAction extends FunctionLike<Promise<FormState>>> = FormState & {
   pending: ReturnType<typeof useFormStatus>["pending"]
   faulted: boolean
-  submit: (payload: TFormPayload) => void
+  submit: TFormAction
 }
 
-function InternalizeAction<TFormState extends FormState, TFormPayload = FormData>(props: InternalizeActionProps<TFormState, TFormPayload>) {
+function InternalizeAction<TFormAction extends FunctionLike<Promise<FormState>>>(props: InternalizeActionProps<TFormAction>) {
   const {
     render,
+    notifyFromServer = true,
     action,
-    initialState = {},
-    permalink,
     onSubmitSuccess = () => { },
   } = props
 
-  const [isNew, setIsNew] = useState(true)
-  const [pendingTransition, startTransition] = useTransition();
-  const [data, executeAction, pending] = useActionState<TFormState, TFormPayload>(
-    (_, payload) => action(payload), initialState as Awaited<TFormState>, permalink)
+  const { notify } = useSnackbar()
+  const [data, executeAction, pending] = useInternalizeAction<TFormAction>(action)
 
-  useEffect(() => {
-    if(data && !pending && !data?.errors && !isNew) {
-      onSubmitSuccess()
+  const handleSubmit = async (...args: Parameters<TFormAction>) => {
+    const data = await executeAction(...args)
+    const hasError = !!data?.errors
+    
+    if(notifyFromServer) {
+      notify({
+        content: data.message ?? (hasError ? "An error has occoured" : "Operation was successfull"),
+        type: hasError ? "danger" : "success"
+      })
     }
-  }, [data, pending])
 
-  const handleSubmit = (payload: TFormPayload) => {
-    setIsNew(false);
-    startTransition(() => {
-      executeAction(payload)
-    })
+    onSubmitSuccess()
+    return data;
   }
 
   return render({
-    pending: pending || pendingTransition,
-    submit: handleSubmit,
+    pending: pending,
+    submit: handleSubmit as TFormAction,
     faulted: !!data?.errors,
     ...data
   })

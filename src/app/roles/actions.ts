@@ -40,8 +40,11 @@ const deleteRole = action(async (role: { name: string }) => {
 
   return await Container(async ({ roleService, revalidate }) => {
     await roleService.deleteRoleAsync(name);
-
     revalidate.roles();
+
+    return {
+      message: `Role ${name} was deleted successfully`
+    } as FormState
   });
 });
 

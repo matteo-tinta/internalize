@@ -2,6 +2,7 @@ import { forwardRef, PropsWithChildren, Ref } from "react";
 import { Modal, ModalRef, ModalRenderProps } from "./modal.component";
 import { Button } from "../form/button";
 import { onClickStopPropagation } from "@/app/lib/helpers/dom-events.helpers";
+import { FormState } from "@/app/lib/dto/form/form.definitions";
 
 type ConfirmationModalProps = PropsWithChildren & {
   disabled?: boolean;
@@ -50,6 +51,24 @@ export const ConfirmationModal = {
   Title: (props: PropsWithChildren) => {
     return (
       <div className="px-5 py-3 !text-xlg font-bold bg-background" {...props} />
+    );
+  },
+  Errors: ({errors, message}: FormState) => {
+    if (!errors) {
+      return null;
+    }
+
+    return (
+      <div className="bg-red-500 mt-2 rounded p-2">
+        <p>{message ?? "An error occoured"}</p>
+        <p className="text-sm">
+          {Object.entries(errors).map(([key, error]) => (
+            <div key={key}>
+              {key.toUpperCase()}: {error}
+            </div>
+          ))}
+        </p>
+      </div>
     );
   },
   Content: (props: PropsWithChildren) => {
