@@ -12,6 +12,7 @@ import { Button } from "@/app/components/form/button";
 import { removeRoleFromUser } from "../actions";
 import { InternalizeAction } from "@/app/components/form/internalize-form/internalize-action.form";
 import { FormState } from "@/app/lib/dto/form/form.definitions";
+import { useSnackbar } from "@/app/components/snackbar/snackbar.context";
 
 type UserRoleProps = {
   userId: string;
@@ -26,6 +27,7 @@ type UserRoleDeleteConfirmationDialogProps = UserRoleProps &
 
 const UserRoleDelete = (props: UserRoleProps) => {
   const { userId, role } = props;
+  const { notify } = useSnackbar()
   const confirmationModal = useRef<ModalRef>(null);
 
   const openConfirmationDialog = () => {
@@ -37,6 +39,10 @@ const UserRoleDelete = (props: UserRoleProps) => {
       action={removeRoleFromUser}
       onSubmitSuccess={() => {
         confirmationModal.current?.close();
+        notify({
+          id: `success-role-add-${role}`,
+          content: `${role} was successfully removed from ${userId}`
+        })
       }}
       render={({ pending, errors, message, submit }) => {
         const handleSubmit = () => {

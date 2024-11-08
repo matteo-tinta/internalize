@@ -2,7 +2,7 @@
 
 import { FormState } from "@/app/lib/dto/form/form.definitions";
 import { useFormStatus } from "react-dom";
-import { ReactNode, useActionState, useEffect, useTransition } from "react";
+import { ReactNode, useActionState, useEffect, useState, useTransition } from "react";
 
 
 type InternalizeActionProps<TFormState extends FormState, TFormPayload = FormData> = {
@@ -28,17 +28,19 @@ function InternalizeAction<TFormState extends FormState, TFormPayload = FormData
     onSubmitSuccess = () => { },
   } = props
 
+  const [isNew, setIsNew] = useState(true)
   const [pendingTransition, startTransition] = useTransition();
   const [data, executeAction, pending] = useActionState<TFormState, TFormPayload>(
     (_, payload) => action(payload), initialState as Awaited<TFormState>, permalink)
 
   useEffect(() => {
-    if(data && !pending && !data?.errors) {
+    if(data && !pending && !data?.errors && !isNew) {
       onSubmitSuccess()
     }
   }, [data, pending])
 
   const handleSubmit = (payload: TFormPayload) => {
+    setIsNew(false);
     startTransition(() => {
       executeAction(payload)
     })

@@ -7,6 +7,7 @@ import "./buttons.css";
 import "./modal.css";
 
 import { Sidenav } from "./components/sidenav/sidenav.component";
+import { SnackbarContext } from "./components/snackbar/snackbar.context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,7 +23,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Internalize",
-  description: "Internalize is a lightweight Role Provider service that will manage all your actions and users in one place. Does not offer an Authentication Part which can be demanded to other services (ie: Azure)",
+  description:
+    "Internalize is a lightweight Role Provider service that will manage all your actions and users in one place. Does not offer an Authentication Part which can be demanded to other services (ie: Azure)",
 };
 
 export default function RootLayout({
@@ -39,8 +41,10 @@ export default function RootLayout({
       >
         <div className="flex">
           <Sidenav></Sidenav>
-          <section>{modal}</section>
-          <section className="w-full px-2">{children}</section>
+          <SnackbarContext>
+            <section>{modal}</section>
+            <section className="w-full px-2">{children}</section>
+          </SnackbarContext>
         </div>
       </body>
     </html>
