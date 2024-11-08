@@ -1,7 +1,7 @@
 import mongoose, { Model, model, Schema } from "mongoose";
 import { RoleType } from "../role/role.domain";
 
-interface IUser {
+export interface IUser {
   userId: string
   roles: RoleType[]
 }

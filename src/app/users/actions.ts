@@ -1,12 +1,13 @@
 "use server";
 
-import { Promise } from "mongoose";
 import { action } from "../lib/helpers/form.helpers";
 import { Container } from "../lib/services/container.service";
+import { userToDto } from "../lib/dto/user/user-dto.model";
 
 export const loadUsers = action(
   async () => Container(async ({ userService }) => {
-    return await userService.all();
+    const users = await userService.all();
+    return users.map(userToDto)
   })
 )
 
