@@ -11,6 +11,10 @@ export type InternalizeMongoSession = ReturnType<
 
 const buildMongoClient = async (connectionString: string) => withTryCatchLogging(
   async () => {
+    mongoose.connection.once("open", () => {
+      console.warn("[DB] Connection successfull")
+    })
+
     const client = await mongoose.connect(connectionString);
     
     const startSession = () => client.startSession();
