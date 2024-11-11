@@ -1,9 +1,13 @@
 const {
   DB_CONN_STRING,
-  NODE_ENV
+  NODE_ENV,
+  RSA_PUBLIC_KEY,
+  RSA_PRIVATE_KEY
 } = process.env
 
 export {
   DB_CONN_STRING,
   NODE_ENV,
+  RSA_PRIVATE_KEY,
+  RSA_PUBLIC_KEY
 }

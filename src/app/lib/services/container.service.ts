@@ -1,4 +1,6 @@
 import { ValidatorService } from "../dto/validator/validator.service"
+import { RSA_PRIVATE_KEY, RSA_PUBLIC_KEY } from "../env"
+import * as crypto from "../helpers/crypto.helpers"
 import { InternalizeMongoClient, buildMongoClient, InternalizeMongoConnectionString } from "../infrastructure/persistence/mongo-client"
 import { ActionRepository } from "../infrastructure/persistence/repositories/action/action.repository"
 import { RoleRepository } from "../infrastructure/persistence/repositories/role/RoleRepository"
@@ -9,19 +11,30 @@ import { revalidate } from "./cache.service"
 import { RoleService } from "./roles/role.service"
 import { UserService } from "./user/user.service"
 
-type ContainerExecuteDependencies = {
+export type ContainerExecuteDependencies = {
   userService: UserService,
   roleService: RoleService,
   actionService: ActionsService,
   formDataValidationService: ValidatorService,
-  revalidate: typeof revalidate
+  revalidate: typeof revalidate,
+  crypto: {
+    encryptFromPublicKey: (key: string) => ReturnType<typeof crypto.encrypt>,
+    encrypt: ReturnType<typeof crypto.encrypt>,
+    decrypt: ReturnType<typeof crypto.decrypt>
+  }
 }
 
 type ContainerExecuteFunction<T> = (deps: ContainerExecuteDependencies) => Promise<T>
 
 const Container = async <T,>(
-  execute: ContainerExecuteFunction<T>
+  execute: ContainerExecuteFunction<T>,
+  onError?: (error: unknown) => void
 ) => {
+  //Encryption RSA
+  const encrypt = crypto.encrypt(crypto.fromString(RSA_PUBLIC_KEY!))
+
+  const decrypt = crypto.decrypt(crypto.fromString(RSA_PRIVATE_KEY!))
+
   //Db connection
   const mongo: InternalizeMongoClient = await buildMongoClient(InternalizeMongoConnectionString!)
 
@@ -45,9 +58,23 @@ const Container = async <T,>(
       roleService,
       actionService,
       formDataValidationService,
-      revalidate
+      revalidate,
+      crypto: {
+        encryptFromPublicKey: (key: string) => crypto.encrypt(crypto.fromString(key)),
+        encrypt,
+        decrypt
+      }
     })
-  } finally {
+  } 
+  catch (error) {
+    if(onError){
+      onError(error)
+      return;
+    }
+    
+    throw error;
+  }
+  finally {
     // await mongo.client.disconnect()
   }
 
