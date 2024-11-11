@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/_media/favicon.jpg">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css" />
+  
+ 
+</head>
+
+<body class="ready">
+  <style>
+    .sidebar,
+    .sidebar-toggle {
+      background-color: #0e1627;
+    }
+
+    .content {
+      padding-top: 0
+    }
+
+    .markdown-section {
+      max-width: 90%;
+    }
+
+    .sidebar img {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+  </style>
+
+  <div id="app">Loading docs...</div>
+ 
+
+  <script>
+    window.$docsify = {
+      auto2top: true,
+      name: 'Internalize',
+      relativePath: true,
+      themeColor: '#fd6950',
+      loadSidebar: true,
+      logo: '/_media/logo.jpg',
+      alias: {
+        '@media': '/_media',
+        '/.*/_sidebar.md': '/_sidebar.md'
+      }
+    }
+  </script>
+  <!-- Docsify v4 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="https://unpkg.com/docsify-plugin-flexible-alerts"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1.22/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1.22/components/prism-http.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1.22/components/prism-bash.min.js"></script>
+</body>
+
+</html>
