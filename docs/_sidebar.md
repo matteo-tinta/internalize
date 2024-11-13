@@ -1,4 +1,5 @@
 * [Internalize](/)
 * [Quick Start](/quick-start/README.md "Quick Start | Internalize Docs")
 * [How to use](/how-it-works/README.md "How to use | Internalize Docs")
+  * [An example on express and react](/how-it-works/examples/express-react.md "An example on express and react | Internalize Docs")
 * [Development](/development/README.md "Development | Internalize Docs")

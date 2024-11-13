@@ -1,4 +1,7 @@
+
 # Development
+Internalize is a tool written in Typescript on NextJS
+
 The minimal requirements to develop internalize are:
 * Node: 22.9.0
 * Docker (on windows you can use WSL)

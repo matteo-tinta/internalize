@@ -11,31 +11,45 @@ This must handled by you following this path:
 
 ![be flow](../_media/flows/be-flow.png)
 
-#### Roles and actions
-Some actor ask for roles or actions about it's role
-
-#### Interrogation Call
-Your be already knows who the user is so why not to ask your be who the user is! :smile:
-
-Compile a url (from your service) including an `interrogate` query parameter which is the endpoint where the headers you will send will be sent again to
-
 > [!WARNING]
 > Keep in mind loops, if you ask internalize an authorized route which call again internalize you will have a loop. There are no spam protections
 
+1. **Actor asks for actions, or authorization**: an actor (may be your FE, or even the BE) asks for actions or roles to authorize a request, it can be any resource you need to authorize
+2. **Your Backend asks Internalize about roles and actions**: in this phase your BE asks for roles to Internalize. Since Internalize does not know what type of authorization are you using, it will need an interrogate callback which the be request headers will be cloned to. This callback need to return the userId
+3. **Internalize find internalized users and their role and actions**: when Internalize has the userId it can retrieve all the roles and actions linked to that userId, and return it to your BE
+
+#### In depth
+
+You will need:
+1. A callback on your BE that will return the actual userId (encrypted with Internalize Public Key and encoded to a base64)
+2. An RSA public key on your BE that must be sent to Internalize to encode the response
+
+Then:
+
+#### 1. Compile the internalize url like so:
+```http
+GET {internalizeBaseUrl}/users/api?interrogate={yourBeCallback}
+```
+#### 2. Add your `PUBLIC_KEY` in the headers:
+```http
+GET {internalizeBaseUrl}/users/api?interrogate={yourBeCallback}
+PUBLIC_KEY: YOUR_RSA_PUBLIC_KEY
+```
+#### 3. Add your authorization headers, or cookies:
+> [!NOTE]
+> Those parameters will be cloned AS-IS from this request, to the interrogation request. So add here all the headers and cookie you will need on your decode interrogation request!
+
 ```http
 GET https://internalize.be.dev/users/api?interrogate=https://your-be.dev/users/user-id
-PUBLIC_KEY: YOUR_RSA_PUBLIC_KEY
 Authorization: Bearer xyz
-Cookie: 
-...
 ```
 
-#### Interrogation Callback Response
-Interrogation url will be called with all the previous request headers you decided to send:
+#### 4. Your BE will receive the interrogation call:
+The complete request will be the following:
+
 ```http
 GET https://your-be.dev/users/user-id
 Authorization: Bearer xyz
-Cookie: 
 
 # Response must be the following
 # Which this base64 encoded json, encrypted with the public key of internalize:
@@ -50,13 +64,15 @@ ewogICJ1c2VySWQiOiAidXNlcl9pZF90aGF0X3dpbGxfbWF0Y2hfaW50ZXJuYWxpemVfdXNlcl9pZCIs
 
 ```
 
-#### Internalize response
+#### 5. Internalize response
+
 Internalize will decrypt and decode your data and will return you a base64 encoded json with the `PUBLIC_KEY` that has been passed to it in the first place so you can keep your private tokens secret:
 
-```
-# this will be the callback response
-ewogICJ1c2VySWQiOiAidXNlcl9pZF90aGF0X3dpbGxfbWF0Y2hfaW50ZXJuYWxpemVfdXNlcl9pZCIsCiAgInJvbGVzIjogWwogICAgewogICAgICAibmFtZSI6ICJhZG1pbiIsCiAgICAgICJhY3Rpb25zIjogWyJ5b3VyIiwgImNvbmZpZ3VyZWQiLCAiYWN0aW9ucyJdCiAgICB9CiAgXQp9
+```http
+GET https://internalize.be.dev/users/api?interrogate=https://your-be.dev/users/user-id
+Authorization: Bearer xyz
 
+# this will be the callback response
 # which is this base64 RSA encrypted json
 #{
 #  "userId": "user_id_that_will_match_internalize_user_id",
@@ -67,6 +83,22 @@ ewogICJ1c2VySWQiOiAidXNlcl9pZF90aGF0X3dpbGxfbWF0Y2hfaW50ZXJuYWxpemVfdXNlcl9pZCIs
 #    }
 #  ]
 #}
+
+ewogICJ1c2VySWQiOiAidXNlcl9pZF90aGF0X3dpbGxfbWF0Y2hfaW50ZXJuYWxpemVfdXNlcl9pZCIsCiAgInJvbGVzIjogWwogICAgewogICAgICAibmFtZSI6ICJhZG1pbiIsCiAgICAgICJhY3Rpb25zIjogWyJ5b3VyIiwgImNvbmZpZ3VyZWQiLCAiYWN0aW9ucyJdCiAgICB9CiAgXQp9
+```
+
+#### 6. Decode and decrypt the internalize response with your private key
+At this point you will have the user id asked, it's roles and it's actions
+```json
+{
+  "userId": "user_id_that_will_match_internalize_user_id",
+  "roles": [
+    {
+      "name": "admin",
+      "actions": ["your", "configured", "actions"]
+    }
+  ]
+}
 ```
 
 #### Conclusion
