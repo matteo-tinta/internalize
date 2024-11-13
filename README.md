@@ -2,6 +2,8 @@
 
 Internalize is a lightweight Role Manager service that will manage all your actions and users in one place. Does not offer an Authentication Part which can be demanded to other services (ie: Azure)
 
+The official doc can be found [here](https://matteo-tinta.github.io/internalize/#/)
+
 ## Configurations
 You will need also to create a `.env` with these configurations:
 
@@ -40,3 +42,8 @@ bun dev
 - Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 - Open [http://localhost:50000](http://localhost:50000) with your browser to see the mongo explorer.
 
+## Dockerization
+
+```bash
+docker build . -t internalize
+```
