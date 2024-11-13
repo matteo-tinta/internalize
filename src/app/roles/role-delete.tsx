@@ -2,13 +2,13 @@
 
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "../components/form/button";
+import { Button } from "../_components/form/button";
 import { forwardRef, Ref, useRef } from "react";
-import { ModalRef } from "../components/modal/modal.component";
-import { ConfirmationModal } from "../components/modal/confirmation.modal.component";
+import { ModalRef } from "../_components/modal/modal.component";
+import { ConfirmationModal } from "../_components/modal/confirmation.modal.component";
 import { deleteRole } from "./actions";
 import { FormState } from "../lib/dto/form/form.definitions";
-import { InternalizeAction } from "../components/form/internalize-form/internalize-action.form";
+import { InternalizeAction } from "../_components/form/internalize-form/internalize-action.form";
 import { onClickStopPropagation } from "../lib/helpers/dom-events.helpers";
 
 type RoleDeleteProps = {

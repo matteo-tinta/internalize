@@ -1,14 +1,14 @@
 "use client";
 
-import { ConfirmationModal } from "@/app/components/modal/confirmation.modal.component";
+import { ConfirmationModal } from "@/app/_components/modal/confirmation.modal.component";
 import {
   ModalRef,
-} from "@/app/components/modal/modal.component";
+} from "@/app/_components/modal/modal.component";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { forwardRef, Ref, useRef } from "react";
-import { Button } from "@/app/components/form/button";
-import { InternalizeAction } from "@/app/components/form/internalize-form/internalize-action.form";
+import { Button } from "@/app/_components/form/button";
+import { InternalizeAction } from "@/app/_components/form/internalize-form/internalize-action.form";
 import { FormState } from "@/app/lib/dto/form/form.definitions";
 import { removeActionFromRole } from "../actions";
 import { onClickStopPropagation } from "@/app/lib/helpers/dom-events.helpers";

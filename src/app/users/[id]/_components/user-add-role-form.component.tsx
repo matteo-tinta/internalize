@@ -1,8 +1,8 @@
-import { Field } from "@/app/components/form/field";
+import { Field } from "@/app/_components/form/field";
 import { addRoleToUser } from "../actions";
 import { IRole } from "@/app/lib/domain/role/role.domain";
-import { Autocomplete } from "@/app/components/form/autocomplete";
-import { InternalizeForm } from "@/app/components/form/internalize-form/internalize.form";
+import { Autocomplete } from "@/app/_components/form/autocomplete";
+import { InternalizeForm } from "@/app/_components/form/internalize-form/internalize.form";
 import { useDate } from "@/app/hooks/useDate.hook";
 
 type UserAddRoleFormProps = {

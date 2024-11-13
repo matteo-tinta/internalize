@@ -44,6 +44,7 @@ const InternalizeForm = (props: InternalizeFormProps) => {
         type: !!state?.errors ? "danger" : "success"
       })
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, pending])
   
   const handleSubmit = (...args: Parameters<typeof executeAction>) => {

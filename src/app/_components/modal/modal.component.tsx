@@ -10,7 +10,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { createPortal } from "react-dom";
 
 export type ModalRenderProps = {
   close: () => void;
@@ -80,19 +79,18 @@ const Modal = forwardRef((props: ModalProps, ref: Ref<ModalRef>) => {
       : overrideClassName;
   };
 
-  return createPortal(
+  return (
     <BaseModal
-          open={open}
-          onClose={handleClose}
-          slots={{ backdrop: Backdrop }}
-          closeAfterTransition
-          className={backdropClassName}
-        >
-          <ModalContent className={overrideClassNameFn()}>
-            {renderModalContent()}
-          </ModalContent>
-        </BaseModal>,
-    document?.body
+      open={open}
+      onClose={handleClose}
+      slots={{ backdrop: Backdrop }}
+      closeAfterTransition
+      className={backdropClassName}
+    >
+      <ModalContent className={overrideClassNameFn()}>
+        {renderModalContent()}
+      </ModalContent>
+    </BaseModal>
   );
 });
 

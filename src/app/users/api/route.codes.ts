@@ -3,6 +3,10 @@ import { FormDataValidationException } from "@/app/lib/dto/validator/validator.s
 export enum ProcessErrorCodes {
   //UNKNOWN ERROR
   "UNK-0000" = "A generic error occoured",
+
+  //Interrogation Error
+  "INT-0001" = "An error occoured interrogating the BE",
+
   //validation errors
   "VAL-DEC-0000" = "A validation error occoured processing decode request",
   "VAL-DEC-0001" = "A validation error occoured processing decode request response",
@@ -13,6 +17,14 @@ export enum ProcessErrorCodes {
   //encrypting errors
   "ENC-0000" = "A generic error occoured encrypting your data",
   "ENC-0001" = "The public key requested is too small for the data to be encrypted"
+}
+
+export class ProcessErrorException extends Error {
+  constructor(error: ProcessErrorCodes, public status: object) {
+    const [code] = Object.entries(ProcessErrorCodes).find(([, value]) => value == error) || ["UNK-0000"]
+
+    super(`${code}:${error.toString()}`)
+  }
 }
 
 const buildError = (opt: {
@@ -37,8 +49,16 @@ const genericError = buildError({
 })
 
 export const handleProcessError = (error: unknown) => {
+  console.error({error})
   if(!error){
     return genericError
+  }
+
+  if(error instanceof ProcessErrorException) {
+    return buildError({
+      code: error.message,
+      message: JSON.stringify(error.status)
+    })
   }
 
   if(error instanceof FormDataValidationException) {

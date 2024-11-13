@@ -1,4 +1,6 @@
-import { Page } from "../components/page";
+export const dynamic = "force-dynamic"
+
+import { Page } from "../_components/page";
 import { listActions } from "./actions";
 import { ActionDelete } from "./components/action-delete";
 import { CreateActionForm } from "./components/create-action-form.component";

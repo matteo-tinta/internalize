@@ -1,4 +1,4 @@
-import { PageHeader } from "@/app/components/page-header/page-header.component";
+import { PageHeader } from "@/app/_components/page-header/page-header.component";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "next/navigation";
 

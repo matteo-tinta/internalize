@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { loadPageData } from "../actions";
 import { useEffect, useState } from "react";
 import { IRole } from "@/app/lib/domain/role/role.domain";
@@ -14,7 +14,6 @@ type UserPageProps = {
 
 const UserPage = (props: UserPageProps) => {
   const router = useRouter();
-  const pathname = usePathname();
 
   const { id: userIdEncoded } = useParams<{ id: string }>();
   const userId = decodeURIComponent(userIdEncoded ?? "");

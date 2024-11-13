@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import { loadAllRoles } from "./actions";
 import { AddRoleForm } from "./components/add-role-form.component";
 import { RoleTable } from "./components/role-table.component";

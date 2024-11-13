@@ -9,6 +9,7 @@ import {
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 import { NextRequest } from "next/server";
 import { ContainerExecuteDependencies } from "@/app/lib/services/container.service";
+import { ProcessErrorCodes, ProcessErrorException } from "./route.codes";
 
 const buildDecodeRequestAsync = async (options: {
   headers: () => Promise<ReadonlyHeaders>;
@@ -53,23 +54,28 @@ const parseDecodeResponseAsync = async (
 ) => {
   const { crypto, validatorService } = deps;
 
-  const response = await executor();
-
-  if (response.status >= 400) {
-    //TODO: throw invalid response
-    throw {
-      status: response.status,
-      statusText: response.statusText,
-    };
+  try {
+    const response = await executor()
+  
+    if (response.status >= 400) {
+      throw new ProcessErrorException(ProcessErrorCodes["INT-0001"], {
+        status: response.status,
+        statusText: response.statusText,
+      });
+    }
+  
+    const responseText = await response.text();
+    const result = crypto.decrypt<object>(responseText);
+  
+    return validatorService.validate<InternalizeDecodeResponse>(
+      InternalizeDecodeResponseSchema,
+      result
+    );
+  } catch (error) {
+    throw new ProcessErrorException(ProcessErrorCodes["INT-0001"], {
+      error: error
+    });  
   }
-
-  const responseText = await response.text();
-  const result = crypto.decrypt<object>(responseText);
-
-  return validatorService.validate<InternalizeDecodeResponse>(
-    InternalizeDecodeResponseSchema,
-    result
-  );
 };
 
 const encryptReponseForClient = (

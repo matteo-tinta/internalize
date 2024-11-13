@@ -1,4 +1,4 @@
-import { Page } from "../components/page";
+import { Page } from "../_components/page";
 
 const UserLayout = (props: Readonly<{
   modal: React.ReactNode;

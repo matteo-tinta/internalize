@@ -1,4 +1,4 @@
-import { Page } from "../components/page";
+import { Page } from "../_components/page";
 
 const RoleLayout = (props: Readonly<{
   modal: React.ReactNode;

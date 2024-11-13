@@ -1,12 +1,12 @@
 "use client";
 
-import { ConfirmationModal } from "@/app/components/modal/confirmation.modal.component";
-import { ModalRef, ModalRenderProps } from "@/app/components/modal/modal.component";
+import { ConfirmationModal } from "@/app/_components/modal/confirmation.modal.component";
+import { ModalRef, ModalRenderProps } from "@/app/_components/modal/modal.component";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef } from "react";
 import { deleteAction } from "../actions";
-import { Button } from "@/app/components/form/button";
+import { Button } from "@/app/_components/form/button";
 
 type ActionDeleteProps = {
   name: string;
@@ -23,7 +23,7 @@ const ActionDelete = (props: ActionDeleteProps) => {
   const onYesDelete = async (confirmationModal: ModalRenderProps) => {
 
     try {
-      const result = await deleteAction({ name: name })
+      await deleteAction({ name: name })
       confirmationModal.close();
     } catch (error) {
       console.error(error)      

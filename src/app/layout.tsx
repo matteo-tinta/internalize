@@ -6,8 +6,8 @@ import "./inputs.css";
 import "./buttons.css";
 import "./modal.css";
 
-import { Sidenav } from "./components/sidenav/sidenav.component";
-import { SnackbarContext } from "./components/snackbar/snackbar.context";
+import { Sidenav } from "./_components/sidenav/sidenav.component";
+import { SnackbarContext } from "./_components/snackbar/snackbar.context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

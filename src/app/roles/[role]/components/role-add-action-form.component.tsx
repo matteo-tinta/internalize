@@ -1,6 +1,6 @@
-import { Field } from "@/app/components/form/field";
-import { Autocomplete } from "@/app/components/form/autocomplete";
-import { InternalizeForm } from "@/app/components/form/internalize-form/internalize.form";
+import { Field } from "@/app/_components/form/field";
+import { Autocomplete } from "@/app/_components/form/autocomplete";
+import { InternalizeForm } from "@/app/_components/form/internalize-form/internalize.form";
 import { useDate } from "@/app/hooks/useDate.hook";
 import { IAction } from "@/app/lib/domain/action/action";
 import { addActionToRole } from "../actions";

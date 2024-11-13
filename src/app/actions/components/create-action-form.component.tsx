@@ -1,10 +1,10 @@
 "use client"
 
-import { Field } from "@/app/components/form/field";
-import { InputError } from "@/app/components/form/input-error";
-import { InternalizeForm } from "@/app/components/form/internalize-form/internalize.form";
-import { Button } from "@/app/components/form/button";
-import { Input } from "@/app/components/form/input";
+import { Field } from "@/app/_components/form/field";
+import { InputError } from "@/app/_components/form/input-error";
+import { InternalizeForm } from "@/app/_components/form/internalize-form/internalize.form";
+import { Button } from "@/app/_components/form/button";
+import { Input } from "@/app/_components/form/input";
 import { createAction } from "../actions";
 
 export const CreateActionForm = () => {

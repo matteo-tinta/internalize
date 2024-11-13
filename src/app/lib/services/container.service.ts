@@ -28,7 +28,7 @@ type ContainerExecuteFunction<T> = (deps: ContainerExecuteDependencies) => Promi
 
 const Container = async <T,>(
   execute: ContainerExecuteFunction<T>,
-  onError?: (error: unknown) => void
+  onError?: (error: unknown) => T
 ) => {
   //Encryption RSA
   const encrypt = crypto.encrypt(crypto.fromString(RSA_PUBLIC_KEY!))
@@ -68,8 +68,7 @@ const Container = async <T,>(
   } 
   catch (error) {
     if(onError){
-      onError(error)
-      return;
+      return onError(error)
     }
     
     throw error;

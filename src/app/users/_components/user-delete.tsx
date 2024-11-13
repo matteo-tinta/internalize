@@ -1,52 +1,49 @@
 "use client";
 
-import { ConfirmationModal } from "@/app/components/modal/confirmation.modal.component";
-import {
-  ModalRef,
-} from "@/app/components/modal/modal.component";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "../../_components/form/button";
 import { forwardRef, Ref, useRef } from "react";
-import { Button } from "@/app/components/form/button";
-import { removeRoleFromUser } from "../actions";
-import { InternalizeAction } from "@/app/components/form/internalize-form/internalize-action.form";
+import { deleteUser } from "../actions";
+import { onClickStopPropagation } from "../../lib/helpers/dom-events.helpers";
+import { ConfirmationModal } from "@/app/_components/modal/confirmation.modal.component";
+import { ModalRef } from "@/app/_components/modal/modal.component";
 import { FormState } from "@/app/lib/dto/form/form.definitions";
-import { onClickStopPropagation } from "@/app/lib/helpers/dom-events.helpers";
+import { InternalizeAction } from "@/app/_components/form/internalize-form/internalize-action.form";
 
-type UserRoleProps = {
+type UserDeleteProps = {
   userId: string;
-  role: string | undefined;
-  disabled?: boolean;
 };
 
-type UserRoleDeleteConfirmationDialogProps = UserRoleProps &
+type UserDeleteConfirmationDialogProps = UserDeleteProps &
   FormState & {
     submit: () => void;
+    disabled: boolean;
   };
 
-const UserRoleDelete = (props: UserRoleProps) => {
-  const { userId, role } = props;
- 
+const UserDelete = (props: UserDeleteProps) => {
+  const { userId } = props;
   const confirmationModal = useRef<ModalRef>(null);
+
   const openConfirmationDialog = () => {
     confirmationModal.current?.open();
   };
 
   return (
     <InternalizeAction
-      action={removeRoleFromUser}
+      action={deleteUser}
       onSubmitSuccess={() => {
         confirmationModal.current?.close();
       }}
       render={({ pending, errors, message, submit }) => {
         const handleSubmit = async () => {
-          await submit({ userId, role: role! });
+          await submit({ userId });
         };
 
         return (
           <>
             <Button
-              disabled={props.disabled || pending}
+              disabled={pending}
               type="button"
               className="text-red-500 disabled:text-gray-400"
               variant="simple"
@@ -55,10 +52,10 @@ const UserRoleDelete = (props: UserRoleProps) => {
               <FontAwesomeIcon icon={faTrash} />
             </Button>
 
-            <UserRoleDeleteConfirmationDialog
+            <UserDeleteConfirmationDialog
               {...props}
               ref={confirmationModal}
-              disabled={pending || props.disabled}
+              disabled={pending}
               submit={handleSubmit}
               errors={errors}
               message={message}
@@ -70,23 +67,22 @@ const UserRoleDelete = (props: UserRoleProps) => {
   );
 };
 
-const UserRoleDeleteConfirmationDialog = forwardRef(
-  (props: UserRoleDeleteConfirmationDialogProps, ref: Ref<ModalRef>) => {
-    const { role, userId, submit, disabled } = props;
+const UserDeleteConfirmationDialog = forwardRef(
+  (props: UserDeleteConfirmationDialogProps, ref: Ref<ModalRef>) => {
+    const { userId, submit, disabled } = props;
 
     return (
       <ConfirmationModal.Modal
-        disabled={disabled}
         onYes={submit}
+        disabled={disabled}
         onCancel={({ close }) => close()}
         ref={ref}
       >
         <ConfirmationModal.Title>
-          Are you sure you want to remove {role} from {userId}?
+          Are you sure you want to delete {userId}?
         </ConfirmationModal.Title>
         <ConfirmationModal.Content>
-          This will remove <b className="text-red-500">Permanently</b> the role{" "}
-          {role}
+          This will delete <b className="text-red-500">Permanently</b> user with id {userId}
           <ConfirmationModal.Errors {...props} />
         </ConfirmationModal.Content>
       </ConfirmationModal.Modal>
@@ -94,6 +90,6 @@ const UserRoleDeleteConfirmationDialog = forwardRef(
   }
 );
 
-UserRoleDeleteConfirmationDialog.displayName = "UserRoleDeleteConfirmationDialog"
+UserDeleteConfirmationDialog.displayName = "UserRoleDeleteConfirmationDialog";
 
-export { UserRoleDelete };
+export { UserDelete };

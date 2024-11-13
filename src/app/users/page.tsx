@@ -1,6 +1,8 @@
+export const dynamic = "force-dynamic"
+
 import { loadUsers } from "./actions";
 import { AddUserForm } from "./add/page";
-import { UserTable } from "./components/user-table";
+import { UserTable } from "./_components/user-table";
 
 const UserPage = async () => {
   const users = await loadUsers();

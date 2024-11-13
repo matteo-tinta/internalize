@@ -1,5 +1,5 @@
 import { loadPageData } from "./actions";
-import { UserPage } from "./components/user-page";
+import { UserPage } from "./_components/user-page";
 
 const Page = () => {
   return (
