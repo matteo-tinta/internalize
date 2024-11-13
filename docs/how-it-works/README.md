@@ -1,8 +1,8 @@
 # How to integrate Internalize in your flow
 > [!ATTENTION]
-> __**Internalize do not provide an authentication to itself!**__ 
-> It must be rendered behind a reverse proxy which will handle it's authentication.
-> otherwise your internalize instance will be open to the entire world! :smile:
+> __**Internalize does not provide an authentication to itself!**__ 
+> It must be rendered behind a reverse proxy which will handle its authentication.
+> Otherwise your internalize instance will be open to the entire world! :smile:
 
 > [!WARNING]
 > In this page Authentication Server and BE are the same actor, but the interrogation callback can a third-party service
@@ -18,7 +18,7 @@ This must handled by you following this path:
 > Keep in mind loops, if you ask internalize an authorized route which call again internalize you will have a loop. There are no spam protections
 
 1. **Actor asks for actions, or authorization**: an actor (may be your FE, or even the BE) asks for actions or roles to authorize a request, it can be any resource you need to authorize
-2. **Your Backend asks Internalize about roles and actions**: in this phase your BE asks for roles to Internalize. Since Internalize does not know what type of authorization are you using, it will need an interrogate callback which the be request headers will be cloned to. This callback need to return the userId
+2. **Your Backend asks Internalize about roles and actions**: in this phase your BE asks for roles to Internalize. Since Internalize does not know what type of authorization are you using, it will need an interrogate callback where the backend request headers will be cloned to. This callback need to return the userId
 3. **Internalize find internalized users and their role and actions**: when Internalize has the userId it can retrieve all the roles and actions linked to that userId, and return it to your BE
 
 #### In depth
@@ -91,7 +91,7 @@ ewogICJ1c2VySWQiOiAidXNlcl9pZF90aGF0X3dpbGxfbWF0Y2hfaW50ZXJuYWxpemVfdXNlcl9pZCIs
 ```
 
 #### 6. Decode and decrypt the internalize response with your private key
-At this point you will have the user id asked, it's roles and it's actions
+At this point you will have the user id asked, its roles and its actions
 ```json
 {
   "userId": "user_id_that_will_match_internalize_user_id",

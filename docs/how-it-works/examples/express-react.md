@@ -1,5 +1,5 @@
 # NodeJS Express and React
-In this section we will build a NodeJS Express server with a React FE which will integrate internalize in it's main flow
+In this section we will build a NodeJS Express server with a React FE which will integrate internalize in its main flow
 
 ### Server Setup
 Let's setup our server:
