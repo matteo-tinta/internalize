@@ -1,32 +1,12 @@
 # Internalize!
 
-Internalize is a lightweight Role Provider service that will manage all your actions and users in one place. Does not offer an Authentication Part which can be demanded to other services (ie: Azure)
+Internalize is a lightweight Role Manager service that will manage all your actions and users in one place. 
 
-## Getting Started
-First, open docker and run:
+Does not offer an Authentication Part which can be demanded to other services (ie: Azure)
 
-```bash
-npm run docker
-# or
-yarn docker
-# or
-pnpm docker
-# or
-bun docker
-```
-
-Second, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-- Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-- Open [http://localhost:50000](http://localhost:50000) with your browser to see the mongo explorer.
-
+<a href="/#/how-it-works/README.md">
+<button 
+  style="width:100%;padding:10px;background-color:#0e1627;border:0;color:var(--theme-color);border-radius:5px;cursor:pointer">
+  GO TO QUICK START!
+</button>
+</a>

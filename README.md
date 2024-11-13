@@ -1,6 +1,16 @@
 # Internalize!
 
-Internalize is a lightweight Role Provider service that will manage all your actions and users in one place. Does not offer an Authentication Part which can be demanded to other services (ie: Azure)
+Internalize is a lightweight Role Manager service that will manage all your actions and users in one place. Does not offer an Authentication Part which can be demanded to other services (ie: Azure)
+
+## Configurations
+You will need also to create a `.env` with these configurations:
+
+```env
+NODE_TLS_REJECT_UNAUTHORIZED=0
+DB_CONN_STRING=mongodb://root:root@127.0.0.1:27017/internalize?authSource=admin
+RSA_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----\nyour-public-key\n-----END PUBLIC KEY-----
+RSA_PRIVATE_KEY=-----BEGIN RSA PRIVATE KEY-----\nyour-private-key\n-----END RSA PRIVATE KEY-----
+```
 
 ## Getting Started
 First, open docker and run:

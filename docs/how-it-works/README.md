@@ -4,6 +4,9 @@
 > It must be rendered behind a reverse proxy which will handle it's authentication.
 > otherwise your internalize instance will be open to the entire world! :smile:
 
+> [!WARNING]
+> In this page Authentication Server and BE are the same actor, but the interrogation callback can a third-party service
+
 ## Backend Flow
 Internalize does not provide any authentication nor authorization out of the box.
 
