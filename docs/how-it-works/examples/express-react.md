@@ -84,7 +84,7 @@ export default App
 ```
 
 ### Setup internalize
-//TODO
+Follow the steps indicated [here](/quick-start/README.md)
 
 ## Internalize Flow
 #### Create a BE endpoint which will decode your authorization method inside your server implementation:
@@ -121,7 +121,7 @@ const SERVER_PUBLIC_KEY=`your_server_public_key`
 const SERVER_PRIVATE_KEY=`your_server_private_key`
 
 const internalizeMiddleware = async (req, res, next) => {
-  const internalizeReponse = await fetch(`${INTERNALIZE_URL}?interrogate=http://localhost:3005/decode`, {
+  const internalizeReponse = await fetch(`${INTERNALIZE_URL}?interrogate=http://host.docker.internal:3005/decode`, {
     headers: {
       PUBLIC_KEY: SERVER_PUBLIC_KEY.replace(/\n/g, "\\n"),
       userId: "this_user_id"
