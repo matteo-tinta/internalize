@@ -1,6 +1,5 @@
 import { ValidatorService } from "../dto/validator/validator.service"
 import { RSA_PRIVATE_KEY, RSA_PUBLIC_KEY } from "../env"
-import * as crypto from "../helpers/crypto.helpers"
 import { InternalizeMongoClient, buildMongoClient, InternalizeMongoConnectionString } from "../infrastructure/persistence/mongo-client"
 import { ActionRepository } from "../infrastructure/persistence/repositories/action/action.repository"
 import { RoleRepository } from "../infrastructure/persistence/repositories/role/RoleRepository"
@@ -8,6 +7,10 @@ import { UnitOfWorkRepository } from "../infrastructure/persistence/repositories
 import { UserRespository } from "../infrastructure/persistence/repositories/user/user.repository"
 import { ActionsService } from "./actions/action.service"
 import { revalidate } from "./cache.service"
+import { CryptoServiceFactory } from "./crypto/crypto.factory"
+import { ICryptoService } from "./crypto/crypto.service"
+import { CryptoPublicKeyEncryptorFactory } from "./crypto/encryptors/crypto-public-key-encryptor.factory"
+import { ICryptoPublicKeyEncrypter } from "./crypto/encryptors/crypto-public-key-encryptor.service"
 import { RoleService } from "./roles/role.service"
 import { UserService } from "./user/user.service"
 
@@ -18,9 +21,8 @@ export type ContainerExecuteDependencies = {
   formDataValidationService: ValidatorService,
   revalidate: typeof revalidate,
   crypto: {
-    encryptFromPublicKey: (key: string) => ReturnType<typeof crypto.encrypt>,
-    encrypt: ReturnType<typeof crypto.encrypt>,
-    decrypt: ReturnType<typeof crypto.decrypt>
+    local: ICryptoService,
+    getRemotePublicKeyEncryptor: (key: string | undefined) => ICryptoPublicKeyEncrypter
   }
 }
 
@@ -30,11 +32,6 @@ const Container = async <T,>(
   execute: ContainerExecuteFunction<T>,
   onError?: (error: unknown) => T
 ) => {
-  //Encryption RSA
-  const encrypt = crypto.encrypt(crypto.fromString(RSA_PUBLIC_KEY!))
-
-  const decrypt = crypto.decrypt(crypto.fromString(RSA_PRIVATE_KEY!))
-
   //Db connection
   const mongo: InternalizeMongoClient = await buildMongoClient(InternalizeMongoConnectionString!)
 
@@ -50,6 +47,11 @@ const Container = async <T,>(
   const actionService = new ActionsService(actionRepository, roleRepository, uof)
   const formDataValidationService = new ValidatorService()
 
+  const cryptoService = CryptoServiceFactory.buildService({
+    privateKey: RSA_PRIVATE_KEY,
+    publicKey: RSA_PUBLIC_KEY
+  })
+
   let result: T;
 
   try {
@@ -60,9 +62,8 @@ const Container = async <T,>(
       formDataValidationService,
       revalidate,
       crypto: {
-        encryptFromPublicKey: (key: string) => crypto.encrypt(crypto.fromString(key)),
-        encrypt,
-        decrypt
+        local: cryptoService,
+        getRemotePublicKeyEncryptor: (key) => CryptoPublicKeyEncryptorFactory.buildService(key)
       }
     })
   } 

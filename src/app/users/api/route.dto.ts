@@ -2,7 +2,7 @@ import { z } from "zod"
 
 //Internalize Request
 export const InternalizeRequestSchema = z.object({
-  publicKey: z.string().min(1, "public key is mandatory"),
+  publicKey: z.string().optional(),
   interrogate: z.string().url("interrogate url is invalid")
 })
 

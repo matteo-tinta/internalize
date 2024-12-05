@@ -3,18 +3,18 @@ import { headers } from "next/headers";
 import { NextRequest } from "next/server";
 import { buildDecodeRequestAsync, encryptReponseForClient, parseDecodeResponseAsync } from "./route.helpers";
 import { handleProcessError } from "./route.codes";
+import { NoCryptoService } from "@/app/lib/services/crypto/no-crypto.service";
 
 export async function GET(request: NextRequest) {
   return await Container(async ({ roleService, crypto, formDataValidationService }) => {
     const decodeTokenRequest = await buildDecodeRequestAsync({
       headers: headers,
       request: request,
-      crypto,
       validationService: formDataValidationService
     })
     
     const { userId } = await parseDecodeResponseAsync(decodeTokenRequest.execute, {
-      crypto,
+      crypto: !decodeTokenRequest.publicKey ? new NoCryptoService() : crypto.local,
       validatorService: formDataValidationService
     })
 

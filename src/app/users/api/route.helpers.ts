@@ -14,7 +14,6 @@ import { ProcessErrorCodes, ProcessErrorException } from "./route.codes";
 const buildDecodeRequestAsync = async (options: {
   headers: () => Promise<ReadonlyHeaders>;
   request: NextRequest;
-  crypto: ContainerExecuteDependencies["crypto"];
   validationService: ValidatorService;
 }) => {
   const { request, headers, validationService } = options;
@@ -48,7 +47,7 @@ const buildDecodeRequestAsync = async (options: {
 const parseDecodeResponseAsync = async (
   executor: () => ReturnType<typeof fetch>,
   deps: {
-    crypto: ContainerExecuteDependencies["crypto"];
+    crypto: ContainerExecuteDependencies["crypto"]["local"];
     validatorService: ContainerExecuteDependencies["formDataValidationService"];
   }
 ) => {
@@ -80,7 +79,7 @@ const parseDecodeResponseAsync = async (
 
 const encryptReponseForClient = (
   opt : {
-    clientPublicKey: string,
+    clientPublicKey: string | undefined,
     response: InternalizeUserRoleResponse
   },
   deps: {
@@ -91,9 +90,9 @@ const encryptReponseForClient = (
   const { crypto } = deps;
 
   //building an encryption function
-  const clientEncrypt = crypto.encryptFromPublicKey(clientPublicKey);
+  const clientEncrypt = crypto.getRemotePublicKeyEncryptor(clientPublicKey);
 
-  const clientEncriptedBuffer = clientEncrypt(response);
+  const clientEncriptedBuffer = clientEncrypt.encrypt(response);
   return clientEncriptedBuffer.toString("base64");
 };
 
