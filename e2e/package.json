@@ -1,0 +1,23 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "main": "db.js",
+  "scripts": {
+    "ui": "npx playwright test --ui",
+    "start": "concurrently \"npm run consumer:start\" \"npm run ui\"",
+    "consumer:start": "cd consumer && npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.10.1",
+    "concurrently": "^9.1.0",
+    "mongo": "^0.1.0"
+  },
+  "dependencies": {
+    "mongodb": "^6.11.0"
+  }
+}

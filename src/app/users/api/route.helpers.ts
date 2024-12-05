@@ -10,6 +10,7 @@ import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/he
 import { NextRequest } from "next/server";
 import { ContainerExecuteDependencies } from "@/app/lib/services/container.service";
 import { ProcessErrorCodes, ProcessErrorException } from "./route.codes";
+import { NoCryptoPublicKeyEncrypter } from "@/app/lib/services/crypto/encryptors/no-crypto-public-key-encryptor";
 
 const buildDecodeRequestAsync = async (options: {
   headers: () => Promise<ReadonlyHeaders>;
@@ -79,7 +80,7 @@ const parseDecodeResponseAsync = async (
 
 const encryptReponseForClient = (
   opt : {
-    clientPublicKey: string | undefined,
+    clientPublicKey: string | null | undefined,
     response: InternalizeUserRoleResponse
   },
   deps: {
@@ -91,9 +92,18 @@ const encryptReponseForClient = (
 
   //building an encryption function
   const clientEncrypt = crypto.getRemotePublicKeyEncryptor(clientPublicKey);
+  
+  if(clientEncrypt instanceof NoCryptoPublicKeyEncrypter) {
+    return {
+      contentType: "application/json",
+      value: JSON.stringify(response)
+    };
+  }
 
-  const clientEncriptedBuffer = clientEncrypt.encrypt(response);
-  return clientEncriptedBuffer.toString("base64");
+  return {
+    contentType: "text/plain",
+    value: clientEncrypt.encrypt(response)
+  };
 };
 
 export {

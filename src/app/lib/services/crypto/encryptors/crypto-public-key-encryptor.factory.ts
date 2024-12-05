@@ -3,7 +3,7 @@ import { NoCryptoPublicKeyEncrypter } from "./no-crypto-public-key-encryptor";
 
 export class CryptoPublicKeyEncryptorFactory {
   public static buildService(
-    publicKey: string | undefined
+    publicKey: string | null | undefined
   ): ICryptoPublicKeyEncrypter {
     if(!publicKey){
       return new NoCryptoPublicKeyEncrypter()

@@ -30,17 +30,25 @@ export class ProcessErrorException extends Error {
 const buildError = (opt: {
   code: ProcessErrorCodes | string,
   message?: string,
-  responseInit?: ResponseInit
+  responseInit?: ResponseInit,
+  state?: object
 }) => {
   const {
     code,
+    state = {},
     message = code.toString()
   } = opt
 
-  return new Response(`${code}:${message}`, {
+  return new Response(JSON.stringify({
+    message: `${code}:${message}`,
+    ...state
+  }), {
     status: opt.responseInit?.status ?? 500,
-    statusText: opt.responseInit?.statusText ?? `${code}:${message}`,
-    headers: opt.responseInit?.headers ?? []
+    statusText: opt.responseInit?.statusText ?? "Internal Server Error",
+    headers: {
+      ...opt.responseInit?.headers,
+      "Content-Type": "application/json"
+    }
   })
 }
 
@@ -63,7 +71,14 @@ export const handleProcessError = (error: unknown) => {
 
   if(error instanceof FormDataValidationException) {
     return buildError({
-      code: ProcessErrorCodes["VAL-DEC-0000"]
+      code: ProcessErrorCodes["VAL-DEC-0000"],
+      responseInit: {
+        status: 400,
+        statusText: "Bad Request"
+      },
+      state: {
+        ...error.formState
+      }
     })
   }
 

@@ -22,7 +22,7 @@ export type ContainerExecuteDependencies = {
   revalidate: typeof revalidate,
   crypto: {
     local: ICryptoService,
-    getRemotePublicKeyEncryptor: (key: string | undefined) => ICryptoPublicKeyEncrypter
+    getRemotePublicKeyEncryptor: (key: string | null | undefined) => ICryptoPublicKeyEncrypter
   }
 }
 
