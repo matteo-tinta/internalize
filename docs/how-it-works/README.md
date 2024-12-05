@@ -27,13 +27,16 @@ You will need:
 1. A callback on your BE that will return the actual userId (encrypted with Internalize Public Key and encoded to a base64)
 2. An RSA public key on your BE that must be sent to Internalize to encode the response
 
+> [!WARNING]
+> If you don't want to add more complexity the PUBLIC_KEY header is absolutelly optional, if not used the responses will not be encrypted and managed as clear JSON responses and requests
+
 Then:
 
 #### 1. Compile the internalize url like so:
 ```http
 GET {internalizeBaseUrl}/users/api?interrogate={yourBeCallback}
 ```
-#### 2. Add your `PUBLIC_KEY` in the headers:
+#### 2. Add your `PUBLIC_KEY` in the headers (optional):
 ```http
 GET {internalizeBaseUrl}/users/api?interrogate={yourBeCallback}
 PUBLIC_KEY: YOUR_RSA_PUBLIC_KEY
@@ -61,9 +64,17 @@ Authorization: Bearer xyz
 #  "roles": [
 #    "optional_user_roles"
 #  ]
-# }
+#}
 
 ewogICJ1c2VySWQiOiAidXNlcl9pZF90aGF0X3dpbGxfbWF0Y2hfaW50ZXJuYWxpemVfdXNlcl9pZCIsCiAgInJvbGVzIjogWwogICAgIm9wdGlvbmFsX3VzZXJfcm9sZXMiCiAgXQp9
+
+## Or if PUBLIC_KEY is not passed, it will remain as
+{
+  "userId": "user_id_that_will_match_internalize_user_id",
+  "roles": [
+    "optional_user_roles"
+  ]
+}
 
 ```
 
@@ -88,9 +99,20 @@ Authorization: Bearer xyz
 #}
 
 ewogICJ1c2VySWQiOiAidXNlcl9pZF90aGF0X3dpbGxfbWF0Y2hfaW50ZXJuYWxpemVfdXNlcl9pZCIsCiAgInJvbGVzIjogWwogICAgewogICAgICAibmFtZSI6ICJhZG1pbiIsCiAgICAgICJhY3Rpb25zIjogWyJ5b3VyIiwgImNvbmZpZ3VyZWQiLCAiYWN0aW9ucyJdCiAgICB9CiAgXQp9
+
+## Or if PUBLIC_KEY is not passed, it will remain as
+{
+  "userId": "user_id_that_will_match_internalize_user_id",
+  "roles": [
+    {
+      "name": "admin",
+      "actions": ["your", "configured", "actions"]
+    }
+  ]
+}
 ```
 
-#### 6. Decode and decrypt the internalize response with your private key
+#### 6. Decode and decrypt the internalize response with your private key (optional)
 At this point you will have the user id asked, its roles and its actions
 ```json
 {
