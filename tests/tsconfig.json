@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["vitest/globals"],
+    "paths": {
+      "@fixtures/*": ["./__fixtures/*"],
+      "@app/*": ["../src/app/*"],
+      "@lib/*": ["../src/app/lib/*"]
+    }
+  },
+  "include": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+  ],
+  "exclude": ["node_modules"]
+}

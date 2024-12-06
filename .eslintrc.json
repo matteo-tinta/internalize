@@ -1,3 +1,4 @@
 {
+  "ignores": ["tests/*", "e2e/*"],
   "extends": ["next/core-web-vitals", "next/typescript"]
 }

@@ -8,17 +8,19 @@ import {
 } from "./route.helpers";
 import { handleProcessError } from "./route.codes";
 import { NoCryptoService } from "@/app/lib/services/crypto/no-crypto.service";
+import { isRoleServiceUserDoesNotExist } from "@/app/lib/services/exceptions/service.exception";
+import { IRole, Role } from "@/app/lib/domain/role/role.domain";
 
 export async function GET(request: NextRequest) {
   return await Container(
-    async ({ roleService, crypto, formDataValidationService }) => {
+    async ({ roleService, crypto, formDataValidationService, userService }) => {
       const decodeTokenRequest = await buildDecodeRequestAsync({
         headers: headers,
         request: request,
         validationService: formDataValidationService,
       });
 
-      const { userId } = await parseDecodeResponseAsync(
+      const { userId, roles: userRoles } = await parseDecodeResponseAsync(
         decodeTokenRequest.execute,
         {
           crypto: !decodeTokenRequest.publicKey
@@ -29,7 +31,29 @@ export async function GET(request: NextRequest) {
       );
 
       //find roles linked to asked userId
-      const roles = await roleService.getRolesByUserId(userId);
+      let roles
+      try {
+        roles = await roleService.getRolesByUserId(userId);
+        
+      } catch (error) {
+        if(!isRoleServiceUserDoesNotExist(error)){
+          throw error
+        }
+        
+        //TODO: create user & roles
+        const roles: IRole[] | undefined = userRoles?.map(role => ({
+          name: role,
+          actions: []
+        }))
+
+        await userService.addUserAsync(userId, roles)
+      }
+      finally {
+        if(!roles)
+        {
+          roles = await roleService.getRolesByUserId(userId);
+        }
+      }
 
       const response = {
         userId: userId,

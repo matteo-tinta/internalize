@@ -1,6 +1,6 @@
 import { Role } from "../../domain/role/role.domain";
 import { BaseService } from "../base.service";
-import { ServiceException } from "../exceptions/service.exception";
+import { RoleServiceRoleOrUserDoesNotExist, RoleServiceUserDoesNotExist, ServiceException } from "../exceptions/service.exception";
 import { IRoleRepository } from "../_interfaces/repositories/IRoleRepository";
 import { IUnitOfWorkRepository } from "../_interfaces/repositories/IUowRepository";
 import { IUserRepository } from "../_interfaces/repositories/IUserRepository";
@@ -23,7 +23,7 @@ export class RoleService extends BaseService {
   getRolesByUserId = async (userId: string) => {
     const user = await this.userRepository.getUserByIdAsync(userId)
     if(!user){
-      throw new ServiceException(`user ${userId} does not exist`)
+      throw RoleServiceUserDoesNotExist(userId)
     }
 
     const {roles} = await user.populate("roles");
@@ -52,7 +52,12 @@ export class RoleService extends BaseService {
     const actualUser = await this.userRepository.getUserByIdAsync(userId);
 
     if (!actualDbRole || !actualUser) {
-      throw new ServiceException(`role ${role} or user ${userId} does not exist`);
+      throw RoleServiceRoleOrUserDoesNotExist({
+        actualRole: actualDbRole,
+        actualUser: actualUser,
+        role: role,
+        userId: userId
+      })
     }
 
     await actualUser.populate("roles")
