@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 const uri = "mongodb://root:root@127.0.0.1:27017/internalize?authSource=admin";
 const db = "internalize"
 
@@ -50,9 +50,14 @@ const seed = (collectionName: CollectionNames, records: object[]) => run(
   }
 )
 
+const generateObjectId = () => {
+  return new ObjectId()
+}
+
 const DB = {
   cleanup,
   seed,
+  generateObjectId,
 }
 
 export default DB

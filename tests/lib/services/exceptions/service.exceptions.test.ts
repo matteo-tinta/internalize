@@ -1,5 +1,5 @@
-import { isRoleServiceRoleAlreadyExist, isRoleServiceRoleAndUserDoNotExist, isRoleServiceRoleDoesNotExist, isRoleServiceUserDoesNotExist, RoleServiceRoleAlreadyExist, RoleServiceRoleOrUserDoesNotExist, RoleServiceUserDoesNotExist, ServiceExceptionErrorCodes } from "@app/lib/services/exceptions/service.exception"
-import { test, describe } from "@fixtures/test.fixture"
+import { isRoleServiceRoleAlreadyExist, isRoleServiceRoleAndUserDoNotExist, isRoleServiceRoleDoesNotExist, isRoleServiceUserDoesNotExist, RoleServiceRoleAlreadyExist, RoleServiceRoleOrUserDoesNotExist, RoleServiceUserDoesNotExist, ServiceExceptionErrorCodes } from "@/app/lib/services/exceptions/service.exception"
+import { test, describe } from "@tests/__fixtures/test.fixture"
 
 describe("RoleServiceUserDoesNotExist", () => {
 

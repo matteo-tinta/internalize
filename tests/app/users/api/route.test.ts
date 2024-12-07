@@ -1,19 +1,19 @@
-import { Container, ContainerExecuteDependencies } from "@app/lib/services/container.service";
-import { RoleService } from "@app/lib/services/roles/role.service"
-import { test, describe } from "@fixtures/test.fixture"
+import { Container, ContainerExecuteDependencies } from "@/app/lib/services/container.service";
+import { RoleService } from "@/app/lib/services/roles/role.service"
+import { test, describe } from "@tests/__fixtures/test.fixture"
 import { NextRequest } from "next/server";
 import { MockedObject } from "vitest"
 import {
   buildDecodeRequestAsync,
   encryptReponseForClient,
   parseDecodeResponseAsync,
-} from "@app/users/api/route.helpers";
-import {GET} from "@app/users/api/route"
-import { RoleServiceUserDoesNotExist } from "@app/lib/services/exceptions/service.exception";
-import { UserService } from "@app/lib/services/user/user.service";
+} from "@/app/users/api/route.helpers";
+import {GET} from "@/app/users/api/route"
+import { RoleServiceUserDoesNotExist } from "@/app/lib/services/exceptions/service.exception";
+import { UserService } from "@/app/lib/services/user/user.service";
 
-vi.mock("@app/users/api/route.helpers")
-vi.mock("@app/lib/services/container.service")
+vi.mock("@/app/users/api/route.helpers")
+vi.mock("@/app/lib/services/container.service")
 
 const buildDecodeRequestAsyncMocked = vi.mocked(buildDecodeRequestAsync)
 const encryptReponseForClientMocked = vi.mocked(encryptReponseForClient)
@@ -41,7 +41,7 @@ describe("GET", ({factory}) => {
       })
 
     buildDecodeRequestAsyncMocked.mockResolvedValue({
-      execute: () => { },
+      execute: (async () => { }) as any,
       publicKey: ""
     })
 

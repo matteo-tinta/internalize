@@ -1,9 +1,12 @@
-import { IUserRepository } from "@app/lib/services/_interfaces/repositories/IUserRepository"
-import { RoleServiceRoleAlreadyExist, ServiceException } from "@app/lib/services/exceptions/service.exception"
-import { RoleService } from "@app/lib/services/roles/role.service"
-import { UserService } from "@app/lib/services/user/user.service"
-import {test, describe} from "@fixtures/test.fixture"
+import {test, describe} from "@tests/__fixtures/test.fixture"
+import { IUserRepository } from '@/app/lib/services/_interfaces/repositories/IUserRepository'
+import { RoleService } from '@/app/lib/services/roles/role.service'
+import { UserService } from '@/app/lib/services/user/user.service'
 import { MockedObject } from "vitest"
+import { Role } from '@/app/lib/domain/role/role.domain'
+
+vi.mock("@/app/lib/domain/role/role.domain")
+const roleMocked = vi.mocked(Role)
 
 describe("UserService", ({factory, mocks}) => {
   let userRepo: MockedObject<IUserRepository>
@@ -16,8 +19,10 @@ describe("UserService", ({factory, mocks}) => {
     })    
 
     roleService = factory.mock<RoleService>({
-      addRoleToUserAsync: vi.fn()
+      all: vi.fn()
     })
+
+    roleMocked.insertMany.mockResolvedValue([])
   })
 
   const buildService = () => factory.service(UserService, userRepo, roleService, mocks.uof)
@@ -32,27 +37,26 @@ describe("UserService", ({factory, mocks}) => {
       { name: "role4" },
     ])
 
-    roleService.addRoleToUserAsync
-      .mockResolvedValueOnce()
-      .mockResolvedValueOnce()
-      .mockRejectedValueOnce(RoleServiceRoleAlreadyExist("role3"))
-      .mockRejectedValueOnce(new ServiceException("generic error should break"))
+    roleService.all.mockResolvedValueOnce(factory.dbRoleAsArray([
+      { name: "role1" },
+      { name: "role2" }
+    ]))
     
     const service = buildService()
     //ACT
 
-    await expect(service.addUserAsync(userId, roles))
-      .rejects
-      .toThrowError(new ServiceException("generic error should break"))
+    await service.addUserAsync(userId, roles)
 
     //ASSERT
+    expect(roleMocked.insertMany).toHaveBeenNthCalledWithMatch(1, [
+      { name: "role3" }, { name: "role4" }
+    ])
+    
     const [dto] = userRepo.addUserAsync.mock.calls[0]
-    expect(dto).toMatchObject({
-      userId: userId
-    })
 
-    expect(roleService.addRoleToUserAsync).toHaveBeenNthCalledWith(1, userId, "role1")
-    expect(roleService.addRoleToUserAsync).toHaveBeenNthCalledWith(2, userId, "role2")
-    expect(roleService.addRoleToUserAsync).toHaveBeenNthCalledWith(3, userId, "role3")
+    expect(dto).toMatchObject(factory.dbUser({
+      userId: userId
+    }))
+
   })
 })

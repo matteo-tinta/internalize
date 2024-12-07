@@ -1,0 +1,8 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.validate.enable": true,
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.projectManager.implicitProjectConfig": false,
+  "typescript.preferences.enable": true
+}

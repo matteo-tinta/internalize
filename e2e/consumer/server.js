@@ -27,8 +27,19 @@ const decrypt = async (response) => {
 }
 
 app.get("/decode", async (req, res) => { 
+  const parseRoles = () => {
+    try {
+      return JSON.parse(req.headers["roles"])
+    }
+    catch (error) {
+      console.log("CONSUMER", {error})
+      return []
+    }
+  }
+
   const decodedTokenAsExample = {
-    userId: req.headers["userid"] //sent by cloning headers
+    userId: req.headers["userid"], //sent by cloning headers
+    roles: parseRoles()
   }
 
   if(!!req.headers["public_key"]) {

@@ -2,7 +2,8 @@ import { test as base, describe as baseDescribe, MockedObject, TestAPI } from "v
 import userEvent from '@testing-library/user-event'
 import {render, renderHook} from '@testing-library/react'
 import { factory } from "../__factory/factory"
-import { IUnitOfWorkRepository } from "@app/lib/services/_interfaces/repositories/IUowRepository"
+import { IUnitOfWorkRepository } from '@/app/lib/services/_interfaces/repositories/IUowRepository'
+import {Role} from "@/app/lib/domain/role/role.domain"
 
 interface BaseTestFixture {
   user: ReturnType<typeof userEvent.setup>,
@@ -24,7 +25,7 @@ const describe = (name: string, testFn: (
   api: TestAPI & { 
     factory: typeof factory,
     mocks: {
-      uof:  MockedObject<IUnitOfWorkRepository>
+      uof:  MockedObject<IUnitOfWorkRepository>,
     }
   }
 ) => void | Promise<void>) => {
@@ -33,11 +34,16 @@ const describe = (name: string, testFn: (
     commitAsync: vi.fn(async (fn) => await fn())
   })
 
+  const baseRoleMocked: MockedObject<typeof Role> = factory.mock<typeof Role>({
+    insertMany: vi.fn()
+  })
+
   baseDescribe(name, (api) => testFn({
     ...api,
     factory: factory,
     mocks: {
-      uof: baseUofMocked
+      uof: baseUofMocked,
+      role: baseRoleMocked
     }
   } as any))
 

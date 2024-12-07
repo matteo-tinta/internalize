@@ -42,8 +42,8 @@ const Container = async <T,>(
   const uof = new UnitOfWorkRepository(mongo)
 
   //services
-  const userService = new UserService(userRepository, uof)
   const roleService = new RoleService(roleRepository, userRepository, uof)
+  const userService = new UserService(userRepository, roleService, uof)
   const actionService = new ActionsService(actionRepository, roleRepository, uof)
   const formDataValidationService = new ValidatorService()
 

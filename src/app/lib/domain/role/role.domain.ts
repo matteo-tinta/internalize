@@ -7,7 +7,7 @@ export interface IRole {
 }
 
 const roleSchema = new Schema<IRole>({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
   actions: [{ type: Schema.Types.ObjectId, ref: "Action" }]
 })
 

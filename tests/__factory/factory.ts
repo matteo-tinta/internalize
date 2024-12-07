@@ -1,5 +1,5 @@
-import { RoleType } from "@app/lib/domain/role/role.domain";
-import { UserType } from "@app/lib/domain/user/user.domain";
+import { Role, RoleType } from "@/app/lib/domain/role/role.domain";
+import { UserType } from "@/app/lib/domain/user/user.domain";
 
 type Optional<T> = {
   [K in keyof T]?: T extends (infer U)[] ? Optional<U> : Optional<T[K]>

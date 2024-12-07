@@ -22,20 +22,6 @@ test.afterEach(async () => {
   await DB.cleanup();
 });
 
-test.beforeEach(async ({ page }) => {
-  await page.route(`**/MOCK/me`, (route) =>
-    route.fulfill({
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: "me",
-      }),
-    })
-  );
-});
-
 test("Should ignore crypto if PUBLIC_KEY is not passed", async ({
   request,
 }) => {
@@ -58,6 +44,74 @@ test("Should ignore crypto if PUBLIC_KEY is not passed", async ({
     roles: [],
   });
 
+});
+
+test("Should create user with roles if not exist (seed)", async ({
+  request,
+}) => {
+  const userId = "userId"
+  const roles = [
+    { _id: DB.generateObjectId(), name: "role1" },
+    { _id: DB.generateObjectId(), name: "role2" }
+  ]
+
+  await DB.seed("users", [
+    { _id: DB.generateObjectId(), userId: userId, roles: roles.map(r => r._id) }
+  ]);
+
+  await DB.seed("roles", roles);
+
+  const fetchRequest = request.get(interrogationUrl, {
+    headers: {
+      userid: userId,
+      roles: JSON.stringify(roles.map(r => r.name))
+    }
+  });
+
+  const responseStatus = await fetchRequest;
+
+  expect(responseStatus.ok()).toBeTruthy();
+  expect(responseStatus.headers()["content-type"]).toBe("application/json");
+
+  const result = await responseStatus.json();
+
+  expect(result).toMatchObject({
+    userId: userId,
+    roles: roles.map(r => ({
+      name: r.name
+    })),
+  });
+});
+
+test("Should create user with roles if not exist (not seeded)", async ({
+  request,
+}) => {
+  const userId = "userId"
+  const roles = [
+    { _id: DB.generateObjectId(), name: "role1" },
+    { _id: DB.generateObjectId(), name: "role2" }
+  ]
+
+  const fetchRequest = request.get(interrogationUrl, {
+    headers: {
+      userid: userId,
+      roles: JSON.stringify(roles.map(r => r.name))
+    }
+  });
+
+  const responseStatus = await fetchRequest;
+
+  expect(responseStatus.ok()).toBeTruthy();
+  expect(responseStatus.headers()["content-type"]).toBe("application/json");
+
+  const result = await responseStatus.json();
+
+  expect(result).toMatchObject({
+    userId: userId,
+    roles: roles.map(r => ({
+      name: r.name
+    })),
+  });
 });
 
 test("Should parse with given PUBLIC_KEY and decode with current PRIVATE_KEY", async ({

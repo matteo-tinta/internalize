@@ -1,11 +1,10 @@
-import { RoleType } from "@app/lib/domain/role/role.domain"
-import { UserType } from "@app/lib/domain/user/user.domain"
-import { IUserRepository } from "@app/lib/services/_interfaces/repositories/IUserRepository"
-import { RoleServiceUserDoesNotExist, ServiceException, ServiceExceptionErrorCodes } from "@app/lib/services/exceptions/service.exception"
-import { test, describe } from "@fixtures/test.fixture"
-import { IRoleRepository } from "@lib/services/_interfaces/repositories/IRoleRepository"
-import { RoleService } from "@lib/services/roles/role.service"
 import { MockedObject } from "vitest"
+import { test, describe } from "@tests/__fixtures/test.fixture"
+import { RoleType } from '@/app/lib/domain/role/role.domain'
+import { IRoleRepository } from '@/app/lib/services/_interfaces/repositories/IRoleRepository'
+import { IUserRepository } from '@/app/lib/services/_interfaces/repositories/IUserRepository'
+import { RoleServiceUserDoesNotExist, ServiceExceptionErrorCodes, ServiceException } from '@/app/lib/services/exceptions/service.exception'
+import { RoleService } from '@/app/lib/services/roles/role.service'
 
 describe("RoleService", ({factory}) => {
   const repoReturns = factory.build<RoleType[]>([
