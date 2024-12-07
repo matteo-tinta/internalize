@@ -36,7 +36,7 @@ const RolePage = (props: RolePageProps) => {
           <thead>
             <tr>
               <th>#</th>
-              <th>Role</th>
+              <th>Action name</th>
               <th>Actions</th>
             </tr>
           </thead>

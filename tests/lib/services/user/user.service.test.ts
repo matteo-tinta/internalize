@@ -49,12 +49,10 @@ describe("UserService", ({factory, mocks}) => {
 
     //ASSERT
     expect(roleMocked.insertMany).toHaveBeenNthCalledWithMatch(1, [
-      { name: "role3" }, { name: "role4" }
+      { name: "role3", fixed: true }, { name: "role4", fixed: true }
     ])
     
-    const [dto] = userRepo.addUserAsync.mock.calls[0]
-
-    expect(dto).toMatchObject(factory.dbUser({
+    expect(userRepo.addUserAsync).toHaveBeenNthCalledWithMatch(1, factory.dbUser({
       userId: userId
     }))
 

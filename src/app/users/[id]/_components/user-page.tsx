@@ -53,7 +53,16 @@ const UserPage = (props: UserPageProps) => {
                 onClick={() => router.push(`/roles/${role.name}`)}
               >
                 <td>{i + 1}</td>
-                <td>{role.name}</td>
+                <td>
+                  {role.name}
+                  {!!role.fixed && (
+                    <div>
+                      <div className="text-sm bg-orange-300 text-white inline-block px-2 rounded-sm">
+                        System Role
+                      </div>
+                    </div>
+                  )}
+                </td>
                 <td>
                   <UserRoleDelete userId={userId} role={role.name} />
                 </td>

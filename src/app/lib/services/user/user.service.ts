@@ -84,6 +84,7 @@ export class UserService extends BaseService {
           {
             _id: new mongoose.Types.ObjectId(),
             name: role.name,
+            fixed: true,
             add: true
           } as RoleType & {add?: boolean}
         ]

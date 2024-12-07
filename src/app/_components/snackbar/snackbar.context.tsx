@@ -42,7 +42,7 @@ const SnackbarContextProvider = (props: PropsWithChildren) => {
     <SnackbarContext.Provider value={baseValue}>
       {props.children}
 
-      <div className="fixed right-4 top-4">
+      <div data-alert className="fixed right-4 top-4">
         {snackbars.map((snackbar) => (
           <div
             key={snackbar.id}

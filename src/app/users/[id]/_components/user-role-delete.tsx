@@ -46,6 +46,7 @@ const UserRoleDelete = (props: UserRoleProps) => {
         return (
           <>
             <Button
+              aria-label='delete role'
               disabled={props.disabled || pending}
               type="button"
               className="text-red-500 disabled:text-gray-400"

@@ -13,6 +13,7 @@ import { onClickStopPropagation } from "../lib/helpers/dom-events.helpers";
 
 type RoleDeleteProps = {
   name: string;
+  disabled: boolean;
 };
 
 type RoleDeleteConfirmationDialogProps = RoleDeleteProps &
@@ -22,7 +23,7 @@ type RoleDeleteConfirmationDialogProps = RoleDeleteProps &
   };
 
 const RoleDelete = (props: RoleDeleteProps) => {
-  const { name } = props;
+  const { name, disabled } = props;
   const confirmationModal = useRef<ModalRef>(null);
 
   const openConfirmationDialog = () => {
@@ -42,8 +43,8 @@ const RoleDelete = (props: RoleDeleteProps) => {
 
         return (
           <>
-            <Button
-              disabled={pending}
+            <Button 
+              disabled={pending || disabled}
               type="button"
               className="text-red-500 disabled:text-gray-400"
               variant="simple"

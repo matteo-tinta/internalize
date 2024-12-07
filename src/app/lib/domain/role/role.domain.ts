@@ -3,11 +3,13 @@ import { ActionDomainType } from "../action/action"
 
 export interface IRole {
   name: string
+  fixed?: boolean,
   actions: ActionDomainType[]
 }
 
 const roleSchema = new Schema<IRole>({
   name: { type: String, required: true, unique: true },
+  fixed: { type: Boolean, default: false },
   actions: [{ type: Schema.Types.ObjectId, ref: "Action" }]
 })
 
