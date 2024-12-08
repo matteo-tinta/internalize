@@ -4,6 +4,7 @@ import {render, renderHook} from '@testing-library/react'
 import { factory } from "../__factory/factory"
 import { IUnitOfWorkRepository } from '@/app/lib/services/_interfaces/repositories/IUowRepository'
 import {Role} from "@/app/lib/domain/role/role.domain"
+import { Container, ContainerExecuteDependencies } from '@/app/lib/services/container.service'
 
 interface BaseTestFixture {
   user: ReturnType<typeof userEvent.setup>,

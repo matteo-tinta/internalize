@@ -19,7 +19,7 @@ export const loadPageData = async (role: string) => {
   const roleActions = await loadActionsByRole(decodeURIComponent(role));
   const allActions = await listActions();
 
-  const isFormState = (object: object | FormState) => {
+  const isFormState = (object: object | FormState): object is FormState => {
     return "errors" in object || "message" in object;
   };
 
@@ -29,23 +29,25 @@ export const loadPageData = async (role: string) => {
   };
 };
 
-export const loadActionsByRole = action(async (roleName: string) => {
-  return await Container(async ({ actionService }) => {
-    const actions = await actionService.getActionsByRole(roleName);
-    return actions.map(actionToDto);
-  });
-});
+export const loadActionsByRole = async (roleName: string) => 
+  await Container(async ({ actionsService }) => {
+    const actionServiceAwaited = await actionsService;
 
-export const addActionToRole = formAction(async (state, formData) => {
-  return await Container(
-    async ({ revalidate, formDataValidationService, actionService }) => {
+    const actions = await actionServiceAwaited.getActionsByRole(roleName);
+    return actions.map(actionToDto);
+  })
+
+export const addActionToRole = formAction(async (_state, formData) => await Container(
+    async ({ revalidate, formDataValidationService, actionsService }) => {
+      const actionServiceAwaited = await actionsService;
+
       const value = formDataValidationService.validateForm<AddActionToRoleDto>(
         AddActionToRoleSchema,
         formData
       );
       const actualRole = decodeURIComponent(value.role);
 
-      await actionService.addActionToRole(actualRole, value.action);
+      await actionServiceAwaited.addActionToRole(actualRole, value.action);
 
       revalidate.roleActions(actualRole);
 
@@ -53,13 +55,14 @@ export const addActionToRole = formAction(async (state, formData) => {
         message: `Action ${value.action} was added to ${actualRole} successfully`,
       } as FormState;
     }
-  );
-});
+  )
+);
 
 export const removeActionFromRole = action(
-  async (props: { action: string; role: string }) => {
-    return await Container(
-      async ({ revalidate, formDataValidationService, actionService }) => {
+    async (props: { action: string; role: string }) => await Container(
+      async ({ revalidate, formDataValidationService, actionsService }) => {
+        const actionsServiceAwaited = await actionsService
+
         const { action, role } =
           formDataValidationService.validate<RemoveActionFromRoleDto>(
             RemoveActionFromRoleDtoSchema,
@@ -67,7 +70,7 @@ export const removeActionFromRole = action(
           );
 
         const actualRole = decodeURIComponent(role);
-        await actionService.removeActionFromRole(actualRole, action);
+        await actionsServiceAwaited.removeActionFromRole(actualRole, action);
 
         revalidate.roleActions(actualRole);
 
@@ -75,6 +78,5 @@ export const removeActionFromRole = action(
           message: `Action ${action} was removed from ${actualRole}`,
         } as FormState;
       }
-    );
-  }
+    )
 );

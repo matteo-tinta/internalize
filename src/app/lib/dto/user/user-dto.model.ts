@@ -8,7 +8,7 @@ type UserDto = {
 
 const userToDto = (user: IUser): UserDto => {
   return {
-    roles: user.roles.map(roleToDto),
+    roles: user.roles?.map(roleToDto) ?? [],
     userId: user.userId
   }
 }

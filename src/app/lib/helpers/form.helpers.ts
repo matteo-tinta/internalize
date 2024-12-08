@@ -10,7 +10,8 @@ const formAction = (callback: ActionType) => async (...args: Parameters<ActionTy
   }
 }
 
-  const action = <T extends AsyncFunctionLike<Awaited<ReturnType<T>>>>(callbackAsync: T) => async (...args: Parameters<T>): Promise<Awaited<ReturnType<T>> | FormState> => {
+  const action = <T extends AsyncFunctionLike<Awaited<ReturnType<T>>>>(callbackAsync: T) => 
+    async (...args: Parameters<T>): Promise<Awaited<ReturnType<T>> | FormState> => {
   try {
     return await callbackAsync(...args)
   } catch (error) {

@@ -14,11 +14,13 @@ const addUser = formAction(async (
 ): Promise<FormState> => {
   return await Container(
     async ({ userService, formDataValidationService, revalidate }) => {
+      const userServiceAwaited = await userService
+
       const data = formDataValidationService.validateForm<CreateUserDto>(
         CreateUserSchema,
         formData
       );
-      await userService.addUserAsync(data.userId);
+      await userServiceAwaited.addUserAsync(data.userId);
 
       revalidate.users();
 

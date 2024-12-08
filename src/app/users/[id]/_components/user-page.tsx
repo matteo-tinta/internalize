@@ -18,10 +18,7 @@ const UserPage = (props: UserPageProps) => {
   const { id: userIdEncoded } = useParams<{ id: string }>();
   const userId = decodeURIComponent(userIdEncoded ?? "");
 
-  const [roles, setRoles] = useState<{
-    userRoles: IRole[];
-    allRoles: IRole[];
-  }>({
+  const [roles, setRoles] = useState<Awaited<ReturnType<typeof props.loadPageData>>>({
     allRoles: [],
     userRoles: [],
   });

@@ -1,50 +1,43 @@
 "use server"
 
-import { handleError } from "../actions";
+import { action, formAction } from '@/app/lib/helpers/form.helpers';
 import { actionToDto } from "../lib/dto/action/action.model";
 import { CreateActionDto, CreateActionSchema } from "../lib/dto/action/createActionDto.model";
 import { ActionType } from "../lib/dto/form/form.definitions";
 import { Container } from "../lib/services/container.service"
 
-export const createAction: ActionType = async (state, formData) => {
-  try {
-    await Container(async ({ actionService, formDataValidationService, revalidate }) => {
-      const data = formDataValidationService.validateForm<CreateActionDto>(CreateActionSchema, formData)
-      await actionService.addActionAsync(data.name);
-      
-      revalidate.actions()
-    });
-  
+export const createAction: ActionType = formAction(async (_state, formData) => {
+  return await Container(async ({ actionsService, formDataValidationService, revalidate }) => {
+    const actionServiceAwaited = await actionsService
+
+    const data = formDataValidationService.validateForm<CreateActionDto>(CreateActionSchema, formData)
+    await actionServiceAwaited.addActionAsync(data.name);
+    
+    revalidate.actions()
+
     return {
       message: "ok"
     }
+  })
+});
 
-  } catch (error) {
-    return handleError(error)
-  }
-}
+export const listActions = async () => await Container(
+    async ( {actionsService} ) => {
+      const actionsServiceAwaited = await actionsService
 
-export const listActions = async () => {
-  return await Container(
-    async ( {actionService} ) => {
-      const actions = await actionService.all()
+      const actions = await actionsServiceAwaited.all()
       return actions.map(actionToDto)
     }
   )
-}
 
-export const deleteAction = async (props: {name: string}) => {
+export const deleteAction = action(async (props: {name: string}) => {
   const { name: actionName } = props
 
-  try {
-    return await Container(
-      async ({actionService, revalidate}) => {
-        await actionService.deleteActionAsync(actionName)
-
-        revalidate.actions()
-      }
-    )
-  } catch {
-    return []
-  }
-}
+  return await Container(
+    async ({actionsService, revalidate}) => {
+      const actionServiceAwaited = await actionsService
+      await actionServiceAwaited.deleteActionAsync(actionName)
+      revalidate.actions()
+    }
+  )
+})

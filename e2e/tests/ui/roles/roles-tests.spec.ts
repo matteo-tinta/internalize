@@ -1,5 +1,6 @@
 import DB from "../../../db";
 import test, { expect } from "@playwright/test";
+import { testWithSeed } from '../../_fixtures/test.fixture';
 
 test.beforeEach(async () => {
   await DB.cleanup();
@@ -8,14 +9,16 @@ test.beforeEach(async () => {
 [
   { fixed: true },
   { fixed: false }
-].forEach(({ fixed }) => {
-  test(`Roles UI: ${fixed ? '': 'not'} fixed roles cannot be removed`, async ({page}) => {
+].forEach(async ({ fixed }) => {
+  testWithSeed(`Roles UI: ${fixed ? '': 'not'} fixed roles cannot be removed`, async ({page, seed, db}) => {
     /** ARRANGE */
     const roles = [
-      { _id: DB.generateObjectId(), name: "role1", fixed: fixed },
+      { _id: db.generateObjectId(), name: "role1", fixed: fixed },
     ]
-  
-    await DB.seed("roles", roles);
+    
+    await seed(async (db) => {
+        await db.seed("roles", roles);
+    })
   
     await page.goto("/roles")
   
@@ -33,18 +36,21 @@ test.beforeEach(async () => {
     }
   });
 
-  test(`Roles UI: can add action to ${fixed ? '': 'not'} fixed role`, async ({page}) => {
+  testWithSeed(`Roles UI: can add action to ${fixed ? '': 'not'} fixed role`, async ({page, db, seed}) => {
     /** ARRANGE */
     const actions = [
-      { _id: DB.generateObjectId(), name: "action_name" }
+      { _id: db.generateObjectId(), name: "action_name" }
     ]
   
     const roles = [
-      { _id: DB.generateObjectId(), name: "role1", fixed: fixed },
+      { _id: db.generateObjectId(), name: "role1", fixed: fixed },
     ]
+
+    await seed(async (db) => {
+      await db.seed("roles", roles);
+      await db.seed("actions", actions);
+    })
   
-    await DB.seed("roles", roles);
-    await DB.seed("actions", actions);
   
     await page.goto(`/roles`)
   

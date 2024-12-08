@@ -10,14 +10,15 @@ import { action, formAction } from "../lib/helpers/form.helpers";
 import { Container } from "../lib/services/container.service";
 
 const addRole = formAction((state: FormState, formData: FormData) =>
-    Container(
-      async ({ roleService, formDataValidationService, revalidate }) => {
+    Container(async ({ roleService, formDataValidationService, revalidate }) => {
+        const roleServiceAwaited = await roleService
+
         const data = formDataValidationService.validateForm<CreateRoleDto>(
           CreateRoleSchema,
           formData
         );
 
-        await roleService.addRoleAsync(data.name);
+        await roleServiceAwaited.addRoleAsync(data.name);
 
         revalidate.roles();
 
@@ -28,18 +29,22 @@ const addRole = formAction((state: FormState, formData: FormData) =>
     )
 );
 
-const loadAllRoles = action(async () => {
+const loadAllRoles = async () => {
   return await Container(async ({ roleService }) => {
-    const roles = await roleService.all();
+    const roleServiceAwaited = await roleService
+
+    const roles = await roleServiceAwaited.all();
     return roles.map(roleToDto);
   });
-});
+};
 
 const deleteRole = action(async (role: { name: string }) => {
   const { name } = role;
 
   return await Container(async ({ roleService, revalidate }) => {
-    await roleService.deleteRoleAsync(name);
+    const roleServiceAwaited = await roleService
+
+    await roleServiceAwaited.deleteRoleAsync(name);
     revalidate.roles();
 
     return {

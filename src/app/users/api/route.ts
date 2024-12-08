@@ -14,6 +14,11 @@ import { IRole, Role } from "@/app/lib/domain/role/role.domain";
 export async function GET(request: NextRequest) {
   return await Container(
     async ({ roleService, crypto, formDataValidationService, userService }) => {
+      const [
+        roleServiceAwaited,
+        userServiceAwaited,
+      ] = await Promise.all([roleService, userService])
+
       const decodeTokenRequest = await buildDecodeRequestAsync({
         headers: headers,
         request: request,
@@ -33,7 +38,7 @@ export async function GET(request: NextRequest) {
       //find roles linked to asked userId
       let roles
       try {
-        roles = await roleService.getRolesByUserId(userId);
+        roles = await roleServiceAwaited.getRolesByUserId(userId);
         
       } catch (error) {
         if(!isRoleServiceUserDoesNotExist(error)){
@@ -46,12 +51,12 @@ export async function GET(request: NextRequest) {
           actions: []
         }))
 
-        await userService.addUserAsync(userId, roles)
+        await userServiceAwaited.addUserAsync(userId, roles)
       }
       finally {
         if(!roles)
         {
-          roles = await roleService.getRolesByUserId(userId);
+          roles = await roleServiceAwaited.getRolesByUserId(userId);
         }
       }
 
