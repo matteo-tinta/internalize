@@ -38,6 +38,10 @@ export const deleteAction = action(async (props: {name: string}) => {
       const actionServiceAwaited = await actionsService
       await actionServiceAwaited.deleteActionAsync(actionName)
       revalidate.actions()
+
+      return {
+        message: `Action ${actionName} was deleted`
+      }
     }
   )
 })
